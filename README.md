@@ -85,6 +85,21 @@ try {
   `URL.revokeObjectURL(path)` when you are done with it. There is no persistent disk
   cache on web, so **`cacheName` and `dirSize` are no-ops**.
 
+### Expo
+
+This is a native module (Nitro), so it requires an **Expo dev build** — it does
+**not** run in Expo Go. Install it, then create a dev build:
+
+```sh
+npx expo install react-native-nitro-thumbnail react-native-nitro-modules
+npx expo prebuild
+npx expo run:ios   # or: npx expo run:android
+```
+
+No config plugin is needed: the library adds no permissions or `Info.plist`
+entries. For remote `http` (not `https`) videos on iOS you may need an ATS
+exception in your app config.
+
 ## Contributing
 
 - [Development workflow](CONTRIBUTING.md#development-workflow)
