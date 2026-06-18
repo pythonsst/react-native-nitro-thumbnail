@@ -1,6 +1,6 @@
 {
   "name": "react-native-nitro-thumbnail",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Generate thumbnails from local or remote videos. Nitro-powered, pure Swift & Kotlin, New Architecture, iOS + Android + Web.",
   "main": "./lib/module/index.js",
   "types": "./lib/typescript/src/index.d.ts",
