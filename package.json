@@ -51,14 +51,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cuepilot/react-native-nitro-thumbnail.git"
+    "url": "git+https://github.com/pythonsst/react-native-nitro-thumbnail.git"
   },
   "author": "Shiv <shiv@cuepilot.ai> (https://github.com/cuepilot)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/cuepilot/react-native-nitro-thumbnail/issues"
+    "url": "https://github.com/pythonsst/react-native-nitro-thumbnail/issues"
   },
-  "homepage": "https://github.com/cuepilot/react-native-nitro-thumbnail#readme",
+  "homepage": "https://github.com/pythonsst/react-native-nitro-thumbnail#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
