@@ -22,7 +22,9 @@ export interface NativeThumbnailResult {
   height: number;
 }
 
-export interface Thumbnail
-  extends HybridObject<{ ios: 'swift'; android: 'kotlin' }> {
+export interface Thumbnail extends HybridObject<{
+  ios: 'swift';
+  android: 'kotlin';
+}> {
   create(options: NativeThumbnailOptions): Promise<NativeThumbnailResult>;
 }

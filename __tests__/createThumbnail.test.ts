@@ -58,9 +58,9 @@ test('clamps quality into 0..1', async () => {
 
 test('maps a native error code to ThumbnailError', async () => {
   mockCreate.mockRejectedValue({ code: 'DECODE_FAILED', message: 'bad frame' });
-  await expect(
-    createThumbnail({ url: 'file:///v.mp4' })
-  ).rejects.toMatchObject({ code: 'DECODE_FAILED', message: 'bad frame' });
+  await expect(createThumbnail({ url: 'file:///v.mp4' })).rejects.toMatchObject(
+    { code: 'DECODE_FAILED', message: 'bad frame' }
+  );
 });
 
 test('returns the native result unchanged', async () => {
