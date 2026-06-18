@@ -30,4 +30,24 @@ object ThumbnailEncoderKt {
     val out = ByteArrayOutputStream()
     return if (bitmap.compress(fmt, q, out)) out.toByteArray() else null
   }
+
+  /**
+   * Given (path, sizeBytes, modifiedMillis) entries and a byte cap, return the
+   * paths to delete (oldest first) so the remaining total is <= cap.
+   */
+  fun filesToEvict(
+    entries: List<Triple<String, Long, Long>>,
+    capBytes: Long,
+  ): List<String> {
+    var running = entries.sumOf { it.second }
+    if (running <= capBytes) return emptyList()
+    val oldestFirst = entries.sortedBy { it.third }
+    val toDelete = mutableListOf<String>()
+    for (e in oldestFirst) {
+      if (running <= capBytes) break
+      toDelete.add(e.first)
+      running -= e.second
+    }
+    return toDelete
+  }
 }

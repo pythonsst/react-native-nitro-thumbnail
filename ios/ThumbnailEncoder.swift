@@ -36,4 +36,21 @@ enum ThumbnailEncoder {
     CGImageDestinationAddImage(dest, image, props as CFDictionary)
     return CGImageDestinationFinalize(dest) ? (data as Data) : nil
   }
+
+  /// Given (path, size, modified-seconds) entries and a byte cap, return paths
+  /// to delete (oldest first) so the remaining total is <= cap.
+  static func filesToEvict(
+    _ entries: [(path: String, size: Int, modified: Double)], capBytes: Int
+  ) -> [String] {
+    var running = entries.reduce(0) { $0 + $1.size }
+    if running <= capBytes { return [] }
+    let oldestFirst = entries.sorted { $0.modified < $1.modified }
+    var toDelete: [String] = []
+    for e in oldestFirst {
+      if running <= capBytes { break }
+      toDelete.append(e.path)
+      running -= e.size
+    }
+    return toDelete
+  }
 }

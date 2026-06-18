@@ -1,5 +1,6 @@
 import AVFoundation
 import Foundation
+import ImageIO
 import NitroModules
 
 final class HybridThumbnail: HybridThumbnailSpec {
@@ -7,6 +8,14 @@ final class HybridThumbnail: HybridThumbnailSpec {
     options: NativeThumbnailOptions
   ) throws -> Promise<NativeThumbnailResult> {
     return Promise.async {
+      // cacheName dedup: if a thumbnail with this name already exists, return it.
+      if let name = options.cacheName, !name.isEmpty {
+        let candidate = try Self.outputURL(format: options.format, cacheName: name)
+        if let hit = Self.existingResult(at: candidate, format: options.format) {
+          return hit
+        }
+      }
+
       let (asset, isRemote) = try Self.makeAsset(options.url, headers: options.headers)
 
       let gen = AVAssetImageGenerator(asset: asset)
@@ -46,6 +55,10 @@ final class HybridThumbnail: HybridThumbnailSpec {
       } catch {
         throw Self.err("WRITE_FAILED", error.localizedDescription)
       }
+
+      Self.enforceLimit(
+        dir: outURL.deletingLastPathComponent(),
+        capBytes: Int(options.dirSize * 1024 * 1024))
 
       return NativeThumbnailResult(
         path: outURL.absoluteString,
@@ -104,5 +117,49 @@ final class HybridThumbnail: HybridThumbnailSpec {
     let base =
       cacheName?.isEmpty == false ? cacheName! : "thumb-\(UUID().uuidString)"
     return dir.appendingPathComponent("\(base).\(ext)")
+  }
+
+  /// Read an existing thumbnail's metadata (for cacheName dedup), or nil.
+  private static func existingResult(
+    at url: URL, format: String
+  ) -> NativeThumbnailResult? {
+    let fm = FileManager.default
+    guard fm.fileExists(atPath: url.path),
+      let attrs = try? fm.attributesOfItem(atPath: url.path),
+      let size = attrs[.size] as? Int,
+      let src = CGImageSourceCreateWithURL(url as CFURL, nil),
+      let props = CGImageSourceCopyPropertiesAtIndex(src, 0, nil) as? [CFString: Any],
+      let w = props[kCGImagePropertyPixelWidth] as? Double,
+      let h = props[kCGImagePropertyPixelHeight] as? Double
+    else { return nil }
+    return NativeThumbnailResult(
+      path: url.absoluteString,
+      size: Double(size),
+      mime: format == "png" ? "image/png" : "image/jpeg",
+      width: w, height: h)
+  }
+
+  /// Enforce the dirSize cap via LRU eviction of the thumbnails directory.
+  private static func enforceLimit(dir: URL, capBytes: Int) {
+    guard capBytes > 0 else { return }
+    let fm = FileManager.default
+    guard
+      let urls = try? fm.contentsOfDirectory(
+        at: dir,
+        includingPropertiesForKeys: [.fileSizeKey, .contentModificationDateKey])
+    else { return }
+    let entries = urls.compactMap {
+      (u) -> (path: String, size: Int, modified: Double)? in
+      guard
+        let v = try? u.resourceValues(forKeys: [
+          .fileSizeKey, .contentModificationDateKey,
+        ]),
+        let size = v.fileSize, let date = v.contentModificationDate
+      else { return nil }
+      return (u.path, size, date.timeIntervalSince1970)
+    }
+    for path in ThumbnailEncoder.filesToEvict(entries, capBytes: capBytes) {
+      try? fm.removeItem(atPath: path)
+    }
   }
 }
