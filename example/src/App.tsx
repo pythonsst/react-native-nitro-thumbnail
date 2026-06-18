@@ -20,6 +20,9 @@ import {
 // it into the app bundle in release builds.
 const SAMPLE = require('../assets/sample.mp4');
 
+// A public remote video to demo streaming-thumbnail extraction (no download step).
+const REMOTE_SAMPLE = 'https://media.w3.org/2010/05/sintel/trailer.mp4';
+
 /**
  * createThumbnail only supports local files in this build, so resolve the
  * bundled asset to a real on-device `file://` path first.
@@ -46,21 +49,34 @@ export default function App() {
   const [err, setErr] = React.useState<string | null>(null);
   const [busy, setBusy] = React.useState(false);
 
-  const run = React.useCallback(async () => {
-    setBusy(true);
-    setErr(null);
-    setThumb(null);
-    try {
-      const localPath = await resolveBundledSampleToFile();
-      const result = await createThumbnail({ url: localPath, timeStamp: 1000 });
-      setThumb(result);
-    } catch (e) {
-      const te = e as ThumbnailError;
-      setErr(`${te.code ?? 'ERR'}: ${te.message}`);
-    } finally {
-      setBusy(false);
-    }
-  }, []);
+  const generate = React.useCallback(
+    async (resolveUrl: () => Promise<string> | string, timeStamp: number) => {
+      setBusy(true);
+      setErr(null);
+      setThumb(null);
+      try {
+        const url = await resolveUrl();
+        const result = await createThumbnail({ url, timeStamp });
+        setThumb(result);
+      } catch (e) {
+        const te = e as ThumbnailError;
+        setErr(`${te.code ?? 'ERR'}: ${te.message}`);
+      } finally {
+        setBusy(false);
+      }
+    },
+    []
+  );
+
+  const run = React.useCallback(
+    () => generate(resolveBundledSampleToFile, 1000),
+    [generate]
+  );
+
+  const runRemote = React.useCallback(
+    () => generate(() => REMOTE_SAMPLE, 2000),
+    [generate]
+  );
 
   // Auto-run once on mount so the result is visible without interaction.
   React.useEffect(() => {
@@ -72,8 +88,13 @@ export default function App() {
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.title}>react-native-nitro-thumbnail</Text>
         <Button
-          title={busy ? 'Working…' : 'Create thumbnail'}
+          title={busy ? 'Working…' : 'Create thumbnail (local)'}
           onPress={run}
+          disabled={busy}
+        />
+        <Button
+          title={busy ? 'Working…' : 'Create thumbnail (remote)'}
+          onPress={runRemote}
           disabled={busy}
         />
         {err && (

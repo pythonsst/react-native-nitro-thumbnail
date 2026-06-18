@@ -7,8 +7,7 @@ final class HybridThumbnail: HybridThumbnailSpec {
     options: NativeThumbnailOptions
   ) throws -> Promise<NativeThumbnailResult> {
     return Promise.async {
-      let url = try Self.resolveURL(options.url) // local only this plan
-      let asset = AVURLAsset(url: url)
+      let (asset, isRemote) = try Self.makeAsset(options.url, headers: options.headers)
 
       let gen = AVAssetImageGenerator(asset: asset)
       gen.appliesPreferredTrackTransform = true
@@ -22,6 +21,12 @@ final class HybridThumbnail: HybridThumbnailSpec {
       do {
         cg = try gen.copyCGImage(at: time, actualTime: nil)
       } catch {
+        let ns = error as NSError
+        if isRemote && ns.domain == NSURLErrorDomain {
+          throw Self.err(
+            "REMOTE_FETCH_FAILED",
+            "Could not fetch remote video: \(error.localizedDescription)")
+        }
         throw Self.err(
           "DECODE_FAILED",
           "Could not extract frame: \(error.localizedDescription)")
@@ -59,23 +64,34 @@ final class HybridThumbnail: HybridThumbnailSpec {
     return RuntimeError("[\(code)] \(message)")
   }
 
-  private static func resolveURL(_ raw: String) throws -> URL {
+  /// Build an AVURLAsset for a local file path or a remote http(s) URL (with headers).
+  /// Returns the asset and whether it is remote (for error-code mapping).
+  private static func makeAsset(
+    _ raw: String, headers: [String: String]?
+  ) throws -> (AVURLAsset, Bool) {
+    if raw.hasPrefix("http://") || raw.hasPrefix("https://") {
+      guard let u = URL(string: raw) else {
+        throw err("INVALID_URL", "Malformed URL: \(raw)")
+      }
+      var options: [String: Any] = [:]
+      if let headers = headers, !headers.isEmpty {
+        options["AVURLAssetHTTPHeaderFieldsKey"] = headers
+      }
+      return (AVURLAsset(url: u, options: options), true)
+    }
     if raw.hasPrefix("file://"), let u = URL(string: raw) {
       guard FileManager.default.fileExists(atPath: u.path) else {
         throw err("FILE_NOT_FOUND", "No file at \(u.path)")
       }
-      return u
+      return (AVURLAsset(url: u), false)
     }
     if raw.hasPrefix("/") {
       guard FileManager.default.fileExists(atPath: raw) else {
         throw err("FILE_NOT_FOUND", "No file at \(raw)")
       }
-      return URL(fileURLWithPath: raw)
+      return (AVURLAsset(url: URL(fileURLWithPath: raw)), false)
     }
-    // remote (http/https) handled in a later plan
-    throw err(
-      "INVALID_URL",
-      "Only local file URLs are supported in this build: \(raw)")
+    throw err("INVALID_URL", "Unsupported URL: \(raw)")
   }
 
   private static func outputURL(format: String, cacheName: String?) throws -> URL {
