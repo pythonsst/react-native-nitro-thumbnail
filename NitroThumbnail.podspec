@@ -19,6 +19,9 @@ Pod::Spec.new do |s|
     "cpp/**/*.{hpp,cpp}",
   ]
 
+  # XCTest files are not part of the shipped pod; they run via the test host.
+  s.exclude_files = "ios/Tests/**/*"
+
   s.dependency 'React-jsi'
   s.dependency 'React-callinvoker'
 
