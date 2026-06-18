@@ -66,3 +66,11 @@ test('maps a native error code to ThumbnailError', async () => {
 test('returns the native result unchanged', async () => {
   await expect(createThumbnail({ url: 'file:///v.mp4' })).resolves.toEqual(OK);
 });
+
+test('forwards http(s) url and headers to native unchanged', async () => {
+  const headers = { Authorization: 'Bearer x', 'X-Test': '1' };
+  await createThumbnail({ url: 'https://host/v.mp4', headers });
+  expect(mockCreate).toHaveBeenCalledWith(
+    expect.objectContaining({ url: 'https://host/v.mp4', headers })
+  );
+});
