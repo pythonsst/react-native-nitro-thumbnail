@@ -14,14 +14,9 @@ import java.util.UUID
 class HybridThumbnail : HybridThumbnailSpec() {
   override fun create(options: NativeThumbnailOptions): Promise<NativeThumbnailResult> {
     return Promise.async {
-      val file = resolveLocalFile(options.url) // local only this plan
       val retriever = MediaMetadataRetriever()
       try {
-        try {
-          retriever.setDataSource(file.absolutePath)
-        } catch (e: Exception) {
-          throw err("DECODE_FAILED", "Could not open video: ${e.message}")
-        }
+        setSource(retriever, options.url, options.headers)
 
         val maxW = options.maxWidth.toInt()
         val maxH = options.maxHeight.toInt()
@@ -62,17 +57,35 @@ class HybridThumbnail : HybridThumbnailSpec() {
   /** Nitro surfaces only the error message to JS, so encode the code as a "[CODE] message" prefix. */
   private fun err(code: String, message: String) = RuntimeException("[$code] $message")
 
-  private fun resolveLocalFile(raw: String): File {
-    val path = when {
-      raw.startsWith("file://") -> Uri.parse(raw).path ?: raw.removePrefix("file://")
-      raw.startsWith("/") -> raw
-      raw.startsWith("http://") || raw.startsWith("https://") ->
-        throw err("INVALID_URL", "Only local file URLs are supported in this build: $raw")
-      else -> throw err("INVALID_URL", "Unsupported URL: $raw")
+  /** Point the retriever at a local file or a remote http(s) URL (with headers). */
+  private fun setSource(
+    retriever: MediaMetadataRetriever,
+    raw: String,
+    headers: Map<String, String>?,
+  ) {
+    when {
+      raw.startsWith("http://") || raw.startsWith("https://") -> {
+        try {
+          retriever.setDataSource(raw, headers ?: emptyMap())
+        } catch (e: Exception) {
+          throw err("REMOTE_FETCH_FAILED", "Could not fetch remote video: ${e.message}")
+        }
+      }
+      else -> {
+        val path = when {
+          raw.startsWith("file://") -> Uri.parse(raw).path ?: raw.removePrefix("file://")
+          raw.startsWith("/") -> raw
+          else -> throw err("INVALID_URL", "Unsupported URL: $raw")
+        }
+        val file = File(path)
+        if (!file.exists()) throw err("FILE_NOT_FOUND", "No file at $path")
+        try {
+          retriever.setDataSource(file.absolutePath)
+        } catch (e: Exception) {
+          throw err("DECODE_FAILED", "Could not open video: ${e.message}")
+        }
+      }
     }
-    val file = File(path)
-    if (!file.exists()) throw err("FILE_NOT_FOUND", "No file at $path")
-    return file
   }
 
   private fun extractFrame(
