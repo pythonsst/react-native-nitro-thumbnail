@@ -50,8 +50,13 @@ when {
       raw.startsWith("/")       -> raw
       else -> throw err("INVALID_URL", "Unsupported URL: $raw")
     }
-    if (!File(path).exists()) throw err("FILE_NOT_FOUND", "No file at $path")
-    retriever.setDataSource(File(path).absolutePath)
+    val file = File(path)
+    if (!file.exists()) throw err("FILE_NOT_FOUND", "No file at $path")
+    try {
+      retriever.setDataSource(file.absolutePath)
+    } catch (e: Exception) {
+      throw err("DECODE_FAILED", "Could not open video: ${e.message}")
+    }
   }
 }
 ```
@@ -60,7 +65,9 @@ when {
   `MediaMetadataRetriever` reads only the bytes it needs to reach the requested
   frame — there's no explicit download step. Failures become `REMOTE_FETCH_FAILED`.
 - **Local** (`file://` or `/…`): the path is resolved and checked with
-  `File.exists()` (→ `FILE_NOT_FOUND` if missing) before `setDataSource`.
+  `File.exists()` (→ `FILE_NOT_FOUND` if missing) before `setDataSource`; if
+  `setDataSource` itself throws (e.g. an unreadable/corrupt file), that maps to
+  `DECODE_FAILED`.
 - **Unsupported scheme** → `INVALID_URL`.
 
 ---

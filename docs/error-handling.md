@@ -178,7 +178,7 @@ know when debugging:
 |---|---|---|---|
 | `FILE_NOT_FOUND` | `FileManager.fileExists` is false | `File.exists()` is false | — (browsers use URLs) |
 | `REMOTE_FETCH_FAILED` | `NSURLErrorDomain` from `AVFoundation` | `setDataSource(url, headers)` throws | `fetch` rejects or `!resp.ok` |
-| `DECODE_FAILED` | `image(at:)` / `copyCGImage` throws | `getFrameAtTime` returns null | `<video>` `onerror` |
+| `DECODE_FAILED` | `image(at:)` / `copyCGImage` throws | `getFrameAtTime` returns null, or `setDataSource` fails on a local file | `<video>` `onerror` |
 | `WRITE_FAILED` | `Data.write` throws | `File.writeBytes` throws | `canvas.toBlob` returns null |
 
 See the [platform guides](./platforms/) for exactly where each is thrown.

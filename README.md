@@ -42,14 +42,14 @@ an iPhone, an Android tablet, or in a browser.
 
 <video src="https://raw.githubusercontent.com/pythonsst/react-native-nitro-thumbnail/main/example/assets/sample.mp4" poster="https://raw.githubusercontent.com/pythonsst/react-native-nitro-thumbnail/main/docs/assets/demo-thumbnail.jpg" controls muted loop width="720"></video>
 
-<p><em>▶︎ Press play — a 2K clip. (<a href="example/assets/sample.mp4">Open the video</a> if it doesn't load inline.)</em></p>
+<p><em>▶︎ Press play — a 2K clip. (<a href="https://raw.githubusercontent.com/pythonsst/react-native-nitro-thumbnail/main/example/assets/sample.mp4">Open the video</a> if it doesn't load inline.)</em></p>
 
 <br/>
 
 **…and here's the thumbnail `createThumbnail()` extracts from it** — one call,
 one frame, scaled and encoded to a crisp 1280×546 JPEG:
 
-<img src="docs/assets/demo-thumbnail.jpg" alt="Thumbnail produced by createThumbnail() from the demo video" width="720" />
+<img src="https://raw.githubusercontent.com/pythonsst/react-native-nitro-thumbnail/main/docs/assets/demo-thumbnail.jpg" alt="Thumbnail produced by createThumbnail() from the demo video" width="720" />
 
 </div>
 
