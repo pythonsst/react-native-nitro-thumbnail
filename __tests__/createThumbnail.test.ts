@@ -68,7 +68,7 @@ test('returns the native result unchanged', async () => {
 });
 
 test('forwards http(s) url and headers to native unchanged', async () => {
-  const headers = { Authorization: 'Bearer x', 'X-Test': '1' };
+  const headers = { 'Authorization': 'Bearer x', 'X-Test': '1' };
   await createThumbnail({ url: 'https://host/v.mp4', headers });
   expect(mockCreate).toHaveBeenCalledWith(
     expect.objectContaining({ url: 'https://host/v.mp4', headers })
