@@ -1,0 +1,23 @@
+{
+  "cxxNamespace": ["nitrothumbnail"],
+  "ios": {
+    "iosModuleName": "NitroThumbnail"
+  },
+  "android": {
+    "androidNamespace": ["nitrothumbnail"],
+    "androidCxxLibName": "nitrothumbnail"
+  },
+  "autolinking": {
+    "Thumbnail": {
+      "ios": {
+        "language": "swift",
+        "implementationClassName": "HybridThumbnail"
+      },
+      "android": {
+        "language": "kotlin",
+        "implementationClassName": "HybridThumbnail"
+      }
+    }
+  },
+  "ignorePaths": ["node_modules"]
+}
