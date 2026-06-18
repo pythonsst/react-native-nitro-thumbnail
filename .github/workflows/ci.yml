@@ -110,6 +110,9 @@ jobs:
         run: |
           yarn turbo run build:android --cache-dir="${{ env.TURBO_CACHE_DIR }}"
 
+      - name: Run Android unit tests
+        run: cd example/android && ./gradlew :react-native-nitro-thumbnail:testDebugUnitTest
+
   build-ios:
     runs-on: macos-latest
 
