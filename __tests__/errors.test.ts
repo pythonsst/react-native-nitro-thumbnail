@@ -24,3 +24,15 @@ test('toThumbnailError passes through an existing ThumbnailError', () => {
   const original = new ThumbnailError('INVALID_URL', 'bad url');
   expect(toThumbnailError(original)).toBe(original);
 });
+
+test('toThumbnailError parses a native "[CODE] message" prefix', () => {
+  const err = toThumbnailError(new Error('[FILE_NOT_FOUND] No file at /x.mp4'));
+  expect(err.code).toBe('FILE_NOT_FOUND');
+  expect(err.message).toBe('No file at /x.mp4');
+});
+
+test('toThumbnailError strips a funcName wrapper before the code prefix', () => {
+  const err = toThumbnailError(new Error('create: [DECODE_FAILED] bad frame'));
+  expect(err.code).toBe('DECODE_FAILED');
+  expect(err.message).toBe('bad frame');
+});
