@@ -28,7 +28,11 @@ final class HybridThumbnail: HybridThumbnailSpec {
       let time = CMTime(value: CMTimeValue(options.timeStamp), timescale: 1000)
       let cg: CGImage
       do {
-        cg = try gen.copyCGImage(at: time, actualTime: nil)
+        if #available(iOS 16.0, *) {
+          cg = try await gen.image(at: time).image
+        } else {
+          cg = try gen.copyCGImage(at: time, actualTime: nil)
+        }
       } catch {
         let ns = error as NSError
         if isRemote && ns.domain == NSURLErrorDomain {
