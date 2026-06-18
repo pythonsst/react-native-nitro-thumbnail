@@ -168,6 +168,29 @@ await createThumbnail({ url, cacheName: 'poster-42' });
 const cached = await createThumbnail({ url, cacheName: 'poster-42' });
 ```
 
+## Migrating from `react-native-create-thumbnail`
+
+It's a drop-in replacement — in most apps the switch is just the package name:
+
+```diff
+- import { createThumbnail } from 'react-native-create-thumbnail';
++ import { createThumbnail } from 'react-native-nitro-thumbnail';
+```
+
+- **Same call, same result.** `createThumbnail(config): Promise<{ path, size, mime, width, height }>` is identical.
+- **Same options.** `url`, `timeStamp`, `format`, `maxWidth`, `maxHeight`, `dirSize`,
+  `cacheName`, `headers`, `timeToleranceMs`, `onlySyncedFrames` all match by name and
+  default. The only addition is the optional `quality` (jpeg).
+- **Both import styles work.** A default import also works, matching the original:
+  `import CreateThumbnail from 'react-native-nitro-thumbnail'; CreateThumbnail.createThumbnail(...)`.
+- **One stricter type:** `headers` is typed `Record<string, string>` (the original used
+  `object`). Header values must be strings — which the native layer requires anyway —
+  so cast/stringify any non‑string values.
+- **Requirements differ.** This library is New‑Architecture‑only and needs
+  `react-native-nitro-modules` installed (add it as a dependency). Errors now reject
+  with a typed `ThumbnailError` (still an `Error`, so existing `try/catch` keeps working).
+- **Bonus:** it also runs on **Web**.
+
 ## Caching
 
 - Thumbnails live in a `thumbnails/` folder inside the platform cache directory

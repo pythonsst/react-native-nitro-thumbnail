@@ -1,7 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-import { createThumbnail } from '../src/index.web';
+import WebDefault, { createThumbnail } from '../src/index.web';
 
 // --- Mocks for the DOM bits jsdom does not implement -------------------------
 const FRAME = { videoWidth: 1280, videoHeight: 720, duration: 10 };
@@ -58,6 +58,11 @@ test('extracts a frame and returns a fitted jpeg object URL', async () => {
   expect(r.width).toBe(512); // 1280x720 fit to 512 box
   expect(r.height).toBe(288);
   expect(r.size).toBe(123);
+});
+
+test('is drop-in: exposes createThumbnail via both named and default import', () => {
+  expect(typeof createThumbnail).toBe('function');
+  expect(WebDefault.createThumbnail).toBe(createThumbnail);
 });
 
 test('rejects empty url with INVALID_URL', async () => {

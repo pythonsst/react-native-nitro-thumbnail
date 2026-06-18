@@ -43,3 +43,7 @@ export async function createThumbnail(
     throw toThumbnailError(e);
   }
 }
+
+// Default export for drop-in compatibility with `react-native-create-thumbnail`,
+// which exposes both a named `createThumbnail` and a default object.
+export default { createThumbnail };

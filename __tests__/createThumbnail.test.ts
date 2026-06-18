@@ -3,7 +3,7 @@ jest.mock('../src/native', () => ({
   getThumbnailNative: () => ({ create: mockCreate }),
 }));
 
-import { createThumbnail } from '../src/index';
+import CreateThumbnail, { createThumbnail } from '../src/index';
 
 const OK = {
   path: 'file:///t.jpg',
@@ -73,4 +73,12 @@ test('forwards http(s) url and headers to native unchanged', async () => {
   expect(mockCreate).toHaveBeenCalledWith(
     expect.objectContaining({ url: 'https://host/v.mp4', headers })
   );
+});
+
+test('is drop-in: works via both named and default import', async () => {
+  expect(typeof createThumbnail).toBe('function');
+  expect(CreateThumbnail.createThumbnail).toBe(createThumbnail);
+  await expect(
+    CreateThumbnail.createThumbnail({ url: 'file:///v.mp4' })
+  ).resolves.toEqual(OK);
 });
