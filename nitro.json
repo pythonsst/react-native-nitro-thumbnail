@@ -8,14 +8,14 @@
     "androidCxxLibName": "nitrothumbnail"
   },
   "autolinking": {
-    "NitroThumbnail": {
+    "Thumbnail": {
       "ios": {
         "language": "swift",
-        "implementationClassName": "NitroThumbnail"
+        "implementationClassName": "HybridThumbnail"
       },
       "android": {
         "language": "kotlin",
-        "implementationClassName": "NitroThumbnail"
+        "implementationClassName": "HybridThumbnail"
       }
     }
   },
