@@ -16,8 +16,8 @@ import {
   type Thumbnail,
 } from 'react-native-nitro-thumbnail';
 
-// Bundled test clip (3s, 640x360). Metro serves it over http in dev and copies
-// it into the app bundle in release builds.
+// Bundled test clip: a ~7s 2K (2048x872) excerpt of Sintel (CC-BY, Blender
+// Foundation). Metro serves it over http in dev and bundles it in release.
 const SAMPLE = require('../assets/sample.mp4');
 
 // A public remote video to demo streaming-thumbnail extraction (no download step).
@@ -69,7 +69,8 @@ export default function App() {
   );
 
   const run = React.useCallback(
-    () => generate(resolveBundledSampleToFile, 1000),
+    // 2000ms lands on the cliff/sunset shot in the bundled Sintel excerpt.
+    () => generate(resolveBundledSampleToFile, 2000),
     [generate]
   );
 
