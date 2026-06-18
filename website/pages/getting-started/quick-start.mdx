@@ -1,0 +1,95 @@
+---
+title: Quick Start
+description: Your first thumbnail in a few lines — capture, render, and handle errors.
+---
+
+import { Callout } from 'nextra/components'
+
+# Quick Start
+
+Once [installed](/getting-started/installation), generating a thumbnail is a single
+`await`. The result is a small object you can drop straight into an `<Image>`.
+
+## Your first thumbnail
+
+```tsx
+import { createThumbnail, ThumbnailError } from 'react-native-nitro-thumbnail';
+import { Image } from 'react-native';
+
+async function makeThumb(videoUri: string) {
+  try {
+    const thumb = await createThumbnail({
+      url: videoUri,     // 'file:///…' or 'https://…'
+      timeStamp: 1000,   // grab the frame at 1.0s (milliseconds)
+      format: 'jpeg',    // 'jpeg' | 'png'
+      maxWidth: 512,     // fit within 512×512, aspect preserved, never upscaled
+      maxHeight: 512,
+      quality: 0.9,      // jpeg quality 0..1 (ignored for png)
+    });
+
+    return thumb.path;   // → <Image source={{ uri: thumb.path }} />
+  } catch (e) {
+    if (e instanceof ThumbnailError) {
+      console.warn(`thumbnail failed [${e.code}]: ${e.message}`);
+    }
+    throw e;
+  }
+}
+```
+
+## Render the result
+
+```tsx
+const thumb = await createThumbnail({ url });
+
+<Image
+  source={{ uri: thumb.path }}
+  style={{ width: thumb.width, height: thumb.height }}
+/>;
+```
+
+<Callout type="info">
+On native, `thumb.path` is a `file://` URL in the app cache directory. On web it's a
+`blob:` object URL — call `URL.revokeObjectURL(thumb.path)` when you're done with it.
+</Callout>
+
+## Common recipes
+
+**Capture at a specific time, as PNG**
+
+```ts
+await createThumbnail({ url, timeStamp: 2500, format: 'png' });
+```
+
+**Remote video behind auth**
+
+```ts
+await createThumbnail({
+  url: 'https://media.example.com/clip.mp4',
+  headers: { Authorization: `Bearer ${token}` },
+});
+```
+
+**Decode once, reuse forever** (see [Caching](/guides/caching))
+
+```ts
+await createThumbnail({ url, cacheName: `poster-${videoId}` });
+```
+
+**Branch on a typed error code** (see [Error Handling](/guides/error-handling))
+
+```ts
+try {
+  await createThumbnail({ url });
+} catch (e) {
+  if (e instanceof ThumbnailError && e.code === 'REMOTE_FETCH_FAILED') {
+    // offer a retry
+  }
+}
+```
+
+## What next?
+
+- The full [API Reference](/guides/api-reference) — every option and result field.
+- How it all works under the hood: [Architecture](/guides/architecture).
+- Coming from another library? [Migration](/guides/migration).

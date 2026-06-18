@@ -1,0 +1,39 @@
+/* Custom polish on top of the Nextra docs theme */
+
+:root {
+  --nt-pink: #e0218a;
+}
+
+/* Landing hero: gradient headline */
+.nextra-content h1 {
+  letter-spacing: -0.02em;
+}
+
+/* Make the home page H1 pop with a subtle gradient */
+main h1:first-of-type {
+  background: linear-gradient(120deg, var(--nt-pink), #7c3aed 60%, #2563eb);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Cards: lift on hover */
+.nextra-card {
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+.nextra-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* Mermaid diagrams: center + breathing room */
+.mermaid {
+  display: flex;
+  justify-content: center;
+  margin: 1.5rem 0;
+}
+
+/* Inline code: a touch of brand color in light mode */
+.nextra-content :not(pre) > code {
+  font-feature-settings: 'liga' 0;
+}

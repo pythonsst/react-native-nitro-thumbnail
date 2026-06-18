@@ -1,0 +1,91 @@
+---
+title: Installation
+description: Install react-native-nitro-thumbnail, set up pods, Expo, and the New Architecture.
+---
+
+import { Callout, Tabs, Steps } from 'nextra/components'
+
+# Installation
+
+`react-native-nitro-thumbnail` is a Nitro module. Installing it is two packages plus a
+pod install — no manual linking, no config plugin.
+
+<Steps>
+### Add the package and the Nitro runtime
+
+<Tabs items={['npm', 'yarn', 'pnpm', 'bun']}>
+  <Tabs.Tab>
+
+```sh
+npm install react-native-nitro-thumbnail react-native-nitro-modules
+```
+
+  </Tabs.Tab>
+  <Tabs.Tab>
+
+```sh
+yarn add react-native-nitro-thumbnail react-native-nitro-modules
+```
+
+  </Tabs.Tab>
+  <Tabs.Tab>
+
+```sh
+pnpm add react-native-nitro-thumbnail react-native-nitro-modules
+```
+
+  </Tabs.Tab>
+  <Tabs.Tab>
+
+```sh
+bun add react-native-nitro-thumbnail react-native-nitro-modules
+```
+
+  </Tabs.Tab>
+</Tabs>
+
+<Callout type="warning">
+`react-native-nitro-modules` is a **required peer dependency** — it provides the Nitro
+runtime. Installing `react-native-nitro-thumbnail` alone will not work.
+</Callout>
+
+### Install iOS pods
+
+```sh
+cd ios && pod install
+```
+
+### Rebuild the app
+
+Native code changed, so rebuild (a Fast Refresh / Metro reload is not enough):
+
+```sh
+npx react-native run-ios     # or run-android
+```
+
+</Steps>
+
+## Expo
+
+This is a native module, so it needs an **Expo dev build** — it does **not** run in
+Expo Go. No config plugin is required:
+
+```sh
+npx expo install react-native-nitro-thumbnail react-native-nitro-modules
+npx expo prebuild && npx expo run:ios   # or run:android
+```
+
+## Requirements
+
+<Callout type="info">
+Requires **React Native 0.75+** with the **New Architecture** enabled. This library is
+New-Architecture-only — there is no old-architecture build.
+</Callout>
+
+| Platform | Engine | Minimum |
+| --- | --- | --- |
+| 🍎 iOS | `AVAssetImageGenerator` | iOS 13 (async `image(at:)` on 16+, `copyCGImage` fallback below) |
+| 🤖 Android | `MediaMetadataRetriever` | minSdk 24 (`getScaledFrameAtTime` on API 27+, scale-after fallback below) |
+| 🌐 Web | `<video>` → `<canvas>` → `toBlob` | modern browsers |
+
+Next: head to the [Quick Start](/getting-started/quick-start).

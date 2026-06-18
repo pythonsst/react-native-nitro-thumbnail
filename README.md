@@ -320,7 +320,12 @@ typed `ThumbnailError.code`, a stricter `headers` type, a new `quality` option,
 
 ## 📚 Documentation
 
-Deep, diagram-rich guides live in **[`docs/`](./docs)**:
+There's a full **documentation site** (Nextra) in [`website/`](./website) — landing
+page, sidebar nav, search, dark mode, and rendered diagrams. Run it with
+`cd website && npm install && npm run dev`, or deploy it to Vercel (see
+[website/README.md](./website/README.md)).
+
+The same content also lives as deep, diagram-rich guides in **[`docs/`](./docs)**:
 
 | Guide | What's inside |
 |---|---|
