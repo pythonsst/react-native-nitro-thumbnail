@@ -1,6 +1,7 @@
 package com.margelo.nitro.nitrothumbnail
 
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Build
@@ -14,6 +15,12 @@ import java.util.UUID
 class HybridThumbnail : HybridThumbnailSpec() {
   override fun create(options: NativeThumbnailOptions): Promise<NativeThumbnailResult> {
     return Promise.async {
+      // cacheName dedup: if a thumbnail with this name already exists, return it.
+      if (!options.cacheName.isNullOrEmpty()) {
+        val candidate = outputFile(options.format, options.cacheName)
+        existingResult(candidate, options.format)?.let { return@async it }
+      }
+
       val retriever = MediaMetadataRetriever()
       try {
         setSource(retriever, options.url, options.headers)
@@ -38,6 +45,8 @@ class HybridThumbnail : HybridThumbnailSpec() {
         } catch (e: Exception) {
           throw err("WRITE_FAILED", e.message ?: "write failed")
         }
+
+        enforceLimit(out.parentFile, (options.dirSize * 1024 * 1024).toLong())
 
         NativeThumbnailResult(
           path = Uri.fromFile(out).toString(),
@@ -114,5 +123,31 @@ class HybridThumbnail : HybridThumbnailSpec() {
     val ext = if (format == "png") "png" else "jpg"
     val base = if (!cacheName.isNullOrEmpty()) cacheName else "thumb-${UUID.randomUUID()}"
     return File(dir, "$base.$ext")
+  }
+
+  /** Read an existing thumbnail's metadata (for cacheName dedup), or null. */
+  private fun existingResult(file: File, format: String): NativeThumbnailResult? {
+    if (!file.exists()) return null
+    val opts = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+    BitmapFactory.decodeFile(file.absolutePath, opts)
+    if (opts.outWidth <= 0 || opts.outHeight <= 0) return null
+    return NativeThumbnailResult(
+      path = Uri.fromFile(file).toString(),
+      size = file.length().toDouble(),
+      mime = ThumbnailEncoderKt.mimeFor(format),
+      width = opts.outWidth.toDouble(),
+      height = opts.outHeight.toDouble(),
+    )
+  }
+
+  /** Enforce the dirSize cap via LRU eviction of the thumbnails directory. */
+  private fun enforceLimit(dir: File?, capBytes: Long) {
+    if (dir == null || capBytes <= 0) return
+    val files = dir.listFiles() ?: return
+    val entries = files.filter { it.isFile }
+      .map { Triple(it.absolutePath, it.length(), it.lastModified()) }
+    for (path in ThumbnailEncoderKt.filesToEvict(entries, capBytes)) {
+      File(path).delete()
+    }
   }
 }
