@@ -66,7 +66,10 @@ class HybridThumbnail : HybridThumbnailSpec() {
   /** Nitro surfaces only the error message to JS, so encode the code as a "[CODE] message" prefix. */
   private fun err(code: String, message: String) = RuntimeException("[$code] $message")
 
-  /** Point the retriever at a local file or a remote http(s) URL (with headers). */
+  /**
+   * Point the retriever at a remote http(s) URL (with headers), a `content://`
+   * URI (gallery / image-picker videos), a `file://` URL, or an absolute path.
+   */
   private fun setSource(
     retriever: MediaMetadataRetriever,
     raw: String,
@@ -78,6 +81,17 @@ class HybridThumbnail : HybridThumbnailSpec() {
           retriever.setDataSource(raw, headers ?: emptyMap())
         } catch (e: Exception) {
           throw err("REMOTE_FETCH_FAILED", "Could not fetch remote video: ${e.message}")
+        }
+      }
+      // content:// URIs come from the gallery / image pickers (SAF). They must be
+      // opened with the app Context, not as a file path.
+      raw.startsWith("content://") -> {
+        val ctx = NitroModules.applicationContext
+          ?: throw err("DECODE_FAILED", "No Android context available for content:// URI")
+        try {
+          retriever.setDataSource(ctx, Uri.parse(raw))
+        } catch (e: Exception) {
+          throw err("DECODE_FAILED", "Could not open content URI: ${e.message}")
         }
       }
       else -> {
