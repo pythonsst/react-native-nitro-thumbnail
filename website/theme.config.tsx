@@ -1,6 +1,8 @@
 import React from 'react';
 import { useConfig } from 'nextra-theme-docs';
 
+const SITE_URL = 'https://nitro-thumbnail.shivshankartiwari.com';
+
 const Logo = () => (
   <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 700 }}>
     <span style={{ fontSize: '1.3rem' }}>🎬</span>
@@ -41,8 +43,13 @@ const config = {
         <meta name="description" content={description} />
         <meta property="og:title" content={pageTitle} />
         <meta property="og:description" content={description} />
+        <meta property="og:url" content={SITE_URL} />
+        <meta property="og:site_name" content="react-native-nitro-thumbnail" />
+        <meta property="og:image" content={`${SITE_URL}/demo-thumbnail.jpg`} />
         <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content={`${SITE_URL}/demo-thumbnail.jpg`} />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="canonical" href={SITE_URL} />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
       </>
     );

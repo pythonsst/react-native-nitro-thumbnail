@@ -4,4 +4,5 @@ export default {
   'error-handling': 'Error Handling',
   caching: 'Caching',
   migration: 'Migration',
+  comparison: 'Issues Solved',
 };

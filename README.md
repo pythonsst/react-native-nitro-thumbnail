@@ -62,6 +62,16 @@ const thumb = await createThumbnail({ url, timeStamp: 2000, maxWidth: 1280 });
 > [CC-BY 3.0](https://creativecommons.org/licenses/by/3.0/). Bundled in
 > [`example/`](./example) so you can run the demo yourself.
 
+### …and running on iOS
+
+<div align="center">
+
+<video src="https://raw.githubusercontent.com/pythonsst/react-native-nitro-thumbnail/main/docs/assets/demo-ios.mp4" poster="https://raw.githubusercontent.com/pythonsst/react-native-nitro-thumbnail/main/docs/assets/demo-ios-poster.jpg" controls muted loop playsinline width="300"></video>
+
+<p><em>The bundled <a href="./example">example app</a> generating a thumbnail on iOS — one call, off the main thread, no UI jank. (Android demo on a physical device coming soon.)</em></p>
+
+</div>
+
 ---
 
 ## ✨ Why this library?
@@ -321,9 +331,10 @@ typed `ThumbnailError.code`, a stricter `headers` type, a new `quality` option,
 ## 📚 Documentation
 
 There's a full **documentation site** (Nextra) in [`website/`](./website) — landing
-page, sidebar nav, search, dark mode, and rendered diagrams. Run it with
-`cd website && npm install && npm run dev`, or deploy it to Vercel (see
-[website/README.md](./website/README.md)).
+page, sidebar nav, search, dark mode, and rendered diagrams. Once deployed it lives at
+**[nitro-thumbnail.shivshankartiwari.com](https://nitro-thumbnail.shivshankartiwari.com)**.
+Run it locally with `cd website && npm install && npm run dev`, or deploy it to Vercel
+(see [website/README.md](./website/README.md)).
 
 The same content also lives as deep, diagram-rich guides in **[`docs/`](./docs)**:
 
@@ -335,6 +346,7 @@ The same content also lives as deep, diagram-rich guides in **[`docs/`](./docs)*
 | 💾 [Caching](./docs/caching.md) | `cacheName` dedup + `dirSize` LRU eviction, explained. |
 | 🍎 [iOS](./docs/platforms/ios.md) · 🤖 [Android](./docs/platforms/android.md) · 🌐 [Web](./docs/platforms/web.md) | Annotated native implementations. |
 | 🔀 [Migration](./docs/migration.md) | Switching from `react-native-create-thumbnail`. |
+| 🛡️ [Issues Solved](./docs/comparison.md) | How this library avoids the reported failure modes of older wrappers. |
 | 🛠️ [Internals & Contributing](./docs/internals.md) | Build pipeline, repo layout, testing, how to hack on it. |
 
 Start with **[Architecture](./docs/architecture.md)** — everything else zooms in

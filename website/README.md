@@ -51,6 +51,21 @@ The site lives in a subdirectory, so set the **Root Directory** to `website`:
 
 No environment variables or secrets are required.
 
+### Custom domain — `nitro-thumbnail.shivshankartiwari.com`
+
+The site's SEO (`theme.config.tsx`) is pre-configured for
+**`https://nitro-thumbnail.shivshankartiwari.com`**. To attach it:
+
+1. In the Vercel project → **Settings → Domains**, add
+   `nitro-thumbnail.shivshankartiwari.com`.
+2. Because `shivshankartiwari.com` is already managed by Vercel (it serves the
+   portfolio), Vercel adds the required DNS record automatically — just click
+   **Add** and wait for the green check. No manual DNS, no change to the
+   `www`/apex portfolio.
+
+> Want a different subdomain (or a path)? Change `SITE_URL` in
+> `theme.config.tsx` and the domain you add in Vercel — that's the only edit.
+
 ### Alternative: GitHub Pages (static export)
 
 Nextra can export a fully static site. Add `output: 'export'` to
