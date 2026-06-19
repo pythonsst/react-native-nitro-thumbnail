@@ -27,7 +27,7 @@ export function RecipeScreen() {
 
   return (
     <View style={styles.section}>
-      <Text style={styles.heading}>{'<VideoThumbnail>'} — shimmer + play</Text>
+      <Text style={styles.heading}>2 · {'<VideoThumbnail>'} component</Text>
       <Text style={styles.intro}>
         Server thumbnail if you have one, else it generates. Tap the play button
         to open your player. Toggle the shimmer below.
@@ -118,7 +118,7 @@ function Case({
 }
 
 const styles = StyleSheet.create({
-  section: { width: '100%', paddingHorizontal: 16, gap: 12 },
+  section: { gap: 12 },
   heading: { fontSize: 16, fontWeight: '700' },
   intro: { color: '#374151', lineHeight: 20 },
   case: {

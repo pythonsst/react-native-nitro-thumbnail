@@ -48,7 +48,7 @@ export default function App() {
   );
 
   const runRemote = React.useCallback(
-    () => generate(() => REMOTE_SAMPLE, 2000),
+    () => generate(() => REMOTE_SAMPLE, 1000),
     [generate]
   );
 
@@ -60,35 +60,61 @@ export default function App() {
   return (
     <SafeAreaView style={styles.safe}>
       <ScrollView contentContainerStyle={styles.container}>
-        <Text style={styles.title}>react-native-nitro-thumbnail</Text>
-        <Button
-          title={busy ? 'Working…' : 'Create thumbnail (local)'}
-          onPress={run}
-          disabled={busy}
-        />
-        <Button
-          title={busy ? 'Working…' : 'Create thumbnail (remote)'}
-          onPress={runRemote}
-          disabled={busy}
-        />
-        {err && (
-          <Text testID="error" style={styles.error}>
-            {err}
+        <View style={styles.header}>
+          <Text style={styles.title}>🎬 react-native-nitro-thumbnail</Text>
+          <Text style={styles.subtitle}>
+            Video thumbnails for iOS, Android & Web — one API.
           </Text>
-        )}
-        {thumb && (
-          <View style={styles.result}>
-            <Image
-              testID="thumb"
-              source={{ uri: thumb.path }}
-              style={styles.image}
-            />
-            <Text testID="json" style={styles.json}>
-              {JSON.stringify(thumb, null, 2)}
-            </Text>
+        </View>
+
+        {/* Section 1 — the headless core function */}
+        <View style={styles.card}>
+          <Text style={styles.sectionTitle}>
+            1 · createThumbnail() — core API
+          </Text>
+          <Text style={styles.sectionDesc}>
+            The headless function. Returns{' '}
+            {'{ path, size, mime, width, height }'}.
+          </Text>
+          <View style={styles.row}>
+            <View style={styles.btn}>
+              <Button
+                title={busy ? 'Working…' : 'Local file'}
+                onPress={run}
+                disabled={busy}
+              />
+            </View>
+            <View style={styles.btn}>
+              <Button
+                title={busy ? 'Working…' : 'Remote URL'}
+                onPress={runRemote}
+                disabled={busy}
+              />
+            </View>
           </View>
-        )}
-        <RecipeScreen />
+          {err && (
+            <Text testID="error" style={styles.error}>
+              {err}
+            </Text>
+          )}
+          {thumb && (
+            <View style={styles.result}>
+              <Image
+                testID="thumb"
+                source={{ uri: thumb.path }}
+                style={styles.image}
+              />
+              <Text testID="json" style={styles.json}>
+                {JSON.stringify(thumb, null, 2)}
+              </Text>
+            </View>
+          )}
+        </View>
+
+        {/* Section 2 — the shipped <VideoThumbnail> component */}
+        <View style={styles.card}>
+          <RecipeScreen />
+        </View>
 
         <Text style={styles.platform}>platform: {Platform.OS}</Text>
       </ScrollView>
@@ -97,17 +123,38 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  safe: { flex: 1 },
-  container: { padding: 16, gap: 12, alignItems: 'center' },
-  title: { fontSize: 16, fontWeight: '600' },
-  error: { color: 'red' },
-  result: { alignItems: 'center', gap: 8 },
+  safe: { flex: 1, backgroundColor: '#f8fafc' },
+  container: { paddingVertical: 16, gap: 16 },
+  header: { paddingHorizontal: 16, gap: 4 },
+  title: { fontSize: 20, fontWeight: '700' },
+  subtitle: { color: '#6b7280' },
+  card: {
+    marginHorizontal: 16,
+    padding: 16,
+    gap: 10,
+    borderRadius: 14,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: '#e5e7eb',
+    backgroundColor: '#ffffff',
+  },
+  sectionTitle: { fontSize: 16, fontWeight: '700' },
+  sectionDesc: { color: '#6b7280', fontSize: 13 },
+  row: { flexDirection: 'row', gap: 12 },
+  btn: { flex: 1 },
+  error: { color: '#dc2626' },
+  result: { gap: 8, alignItems: 'center' },
   image: {
-    width: 256,
-    height: 144,
-    backgroundColor: '#eee',
+    width: '100%',
+    height: 170,
+    backgroundColor: '#f1f5f9',
+    borderRadius: 8,
     resizeMode: 'contain',
   },
-  json: { fontFamily: Platform.OS === 'ios' ? 'Menlo' : 'monospace' },
-  platform: { color: '#888' },
+  json: {
+    fontFamily: Platform.OS === 'ios' ? 'Menlo' : 'monospace',
+    fontSize: 11,
+    color: '#334155',
+    alignSelf: 'stretch',
+  },
+  platform: { color: '#9ca3af', textAlign: 'center', paddingTop: 4 },
 });
