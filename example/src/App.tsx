@@ -9,40 +9,13 @@ import {
   StyleSheet,
   Platform,
 } from 'react-native';
-import * as RNFS from '@dr.pogodin/react-native-fs';
 import {
   createThumbnail,
   ThumbnailError,
   type Thumbnail,
 } from 'react-native-nitro-thumbnail';
-
-// Bundled test clip: a ~7s 2K (2048x872) excerpt of Sintel (CC-BY, Blender
-// Foundation). Metro serves it over http in dev and bundles it in release.
-const SAMPLE = require('../assets/sample.mp4');
-
-// A public remote video to demo streaming-thumbnail extraction (no download step).
-const REMOTE_SAMPLE = 'https://media.w3.org/2010/05/sintel/trailer.mp4';
-
-/**
- * createThumbnail only supports local files in this build, so resolve the
- * bundled asset to a real on-device `file://` path first.
- */
-async function resolveBundledSampleToFile(): Promise<string> {
-  const dest = `${RNFS.CachesDirectoryPath}/sample.mp4`;
-  const src = Image.resolveAssetSource(SAMPLE);
-  if (src?.uri?.startsWith('http')) {
-    // Dev: Metro serves the asset over http — download it to a local file.
-    await RNFS.downloadFile({ fromUrl: src.uri, toFile: dest }).promise;
-  } else if (src?.uri) {
-    // Release: the asset is already a local path/bundle resource — copy it.
-    const from = src.uri.replace(/^file:\/\//, '');
-    if (from !== dest) {
-      if (await RNFS.exists(dest)) await RNFS.unlink(dest);
-      await RNFS.copyFile(from, dest);
-    }
-  }
-  return `file://${dest}`;
-}
+import { REMOTE_SAMPLE, resolveBundledSampleToFile } from './sample';
+import { RecipeScreen } from './RecipeScreen';
 
 export default function App() {
   const [thumb, setThumb] = React.useState<Thumbnail | null>(null);
@@ -115,6 +88,8 @@ export default function App() {
             </Text>
           </View>
         )}
+        <RecipeScreen />
+
         <Text style={styles.platform}>platform: {Platform.OS}</Text>
       </ScrollView>
     </SafeAreaView>

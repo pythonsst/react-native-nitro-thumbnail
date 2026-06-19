@@ -308,8 +308,9 @@ Everything lives on the **[documentation site →](https://react-native-nitro-th
 | | | |
 |---|---|---|
 | [🏛️ Architecture](https://react-native-nitro-thumbnail.vercel.app/guides/architecture) | [📖 API Reference](https://react-native-nitro-thumbnail.vercel.app/guides/api-reference) | [⚠️ Error Handling](https://react-native-nitro-thumbnail.vercel.app/guides/error-handling) |
-| [💾 Caching](https://react-native-nitro-thumbnail.vercel.app/guides/caching) | [🔀 Migration](https://react-native-nitro-thumbnail.vercel.app/guides/migration) | [🛡️ Issues Solved](https://react-native-nitro-thumbnail.vercel.app/guides/comparison) |
-| [🍎 iOS](https://react-native-nitro-thumbnail.vercel.app/platforms/ios) | [🤖 Android](https://react-native-nitro-thumbnail.vercel.app/platforms/android) | [🌐 Web](https://react-native-nitro-thumbnail.vercel.app/platforms/web) |
+| [💾 Caching](https://react-native-nitro-thumbnail.vercel.app/guides/caching) | [🧑‍🍳 Recipes](https://react-native-nitro-thumbnail.vercel.app/guides/recipes) | [🔀 Migration](https://react-native-nitro-thumbnail.vercel.app/guides/migration) |
+| [🛡️ Issues Solved](https://react-native-nitro-thumbnail.vercel.app/guides/comparison) | [🍎 iOS](https://react-native-nitro-thumbnail.vercel.app/platforms/ios) | [🤖 Android](https://react-native-nitro-thumbnail.vercel.app/platforms/android) |
+| [🌐 Web](https://react-native-nitro-thumbnail.vercel.app/platforms/web) | | |
 
 ---
 

@@ -1,0 +1,134 @@
+---
+title: Recipes
+description: Practical patterns — including showing a server thumbnail and only generating one as a fallback.
+---
+
+import { Callout } from 'nextra/components'
+
+# Recipes
+
+Copy-paste patterns for common real-world needs.
+
+## Server thumbnail first (generate only when missing)
+
+If your API already returns a thumbnail for a video, you should **show that and not
+generate anything**. `createThumbnail` is a single-purpose tool — *"here's a video, give
+me a frame"* — so the "do I even need to generate?" decision lives in your app.
+
+```
+serverThumbnail provided?  ──yes──▶  show it        (createThumbnail never runs)
+        │ no
+        ▼
+   generate it  ──▶  createThumbnail({ url })  ──▶  cache + show
+```
+
+<Callout type="info">
+A runnable version of everything below — all four cases side by side — is in the
+[example app](https://github.com/pythonsst/react-native-nitro-thumbnail/blob/main/example/src/RecipeScreen.tsx).
+</Callout>
+
+### The reusable component
+
+```tsx
+import * as React from 'react';
+import { Image, View, ActivityIndicator, StyleSheet } from 'react-native';
+import { createThumbnail, ThumbnailError } from 'react-native-nitro-thumbnail';
+
+type Props = {
+  videoUrl?: string | null;
+  serverThumbnail?: string | null; // the URL your API already returns, if any
+  timeStamp?: number;
+  width?: number;
+  height?: number;
+};
+
+export function VideoThumbnail({
+  videoUrl,
+  serverThumbnail,
+  timeStamp = 1000,
+  width = 160,
+  height = 90,
+}: Props) {
+  const [generated, setGenerated] = React.useState<string | null>(null);
+  const [loading, setLoading] = React.useState(false);
+
+  React.useEffect(() => {
+    // 1) Server already has one → show it, generate nothing.
+    if (serverThumbnail || !videoUrl) return;
+
+    // 2) Otherwise generate as a fallback (cached → decode once).
+    let alive = true;
+    setLoading(true);
+    createThumbnail({
+      url: videoUrl,
+      timeStamp,
+      cacheName: `vt-${stableKey(videoUrl)}-${timeStamp}`,
+    })
+      .then((t) => alive && setGenerated(t.path))
+      .catch((e) => {
+        if (e instanceof ThumbnailError) console.warn(`[${e.code}] ${e.message}`);
+      })
+      .finally(() => alive && setLoading(false));
+
+    return () => {
+      alive = false;
+    };
+  }, [videoUrl, serverThumbnail, timeStamp]);
+
+  const uri = serverThumbnail ?? generated;
+  const box = { width, height };
+
+  if (uri) return <Image source={{ uri }} style={[styles.thumb, box]} />;
+  return (
+    <View style={[styles.thumb, styles.center, box]}>
+      {loading ? <ActivityIndicator /> : null}
+    </View>
+  );
+}
+
+function stableKey(s: string) {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (Math.imul(31, h) + s.charCodeAt(i)) | 0;
+  return Math.abs(h).toString(36);
+}
+
+const styles = StyleSheet.create({
+  thumb: { borderRadius: 8, backgroundColor: '#e5e7eb' },
+  center: { alignItems: 'center', justifyContent: 'center' },
+});
+```
+
+### Using it in a list
+
+```tsx
+const videos = [
+  { id: '1', videoUrl: 'https://cdn.app/clip1.mp4', thumbnailUrl: 'https://cdn.app/clip1.jpg' },
+  { id: '2', videoUrl: 'https://cdn.app/clip2.mp4', thumbnailUrl: null },
+  { id: '3', videoUrl: 'file:///…/local.mp4',       thumbnailUrl: null },
+];
+
+<FlatList
+  data={videos}
+  keyExtractor={(v) => v.id}
+  renderItem={({ item }) => (
+    <VideoThumbnail videoUrl={item.videoUrl} serverThumbnail={item.thumbnailUrl} />
+  )}
+/>;
+```
+
+### What happens in each case
+
+| Item | `serverThumbnail` | Behaviour |
+| --- | --- | --- |
+| #1 | ✅ set | Shows the server image **immediately**. `createThumbnail` is **never called**. |
+| #2 | ❌ null | Generates from the remote video, caches it, then shows it. |
+| #3 | ❌ null | Same fallback, from a local `file://` video. |
+| _bad URL_ | ❌ null | Generation fails → graceful placeholder, **no crash**. |
+
+The whole trick is the one line `if (serverThumbnail) return;` — when the server provides
+a thumbnail, the library does zero work.
+
+<Callout type="warning">
+The library never auto-skips generation based on a server thumbnail, because it can't
+know about your backend. **You** decide whether to call it — that's by design.
+</Callout>
