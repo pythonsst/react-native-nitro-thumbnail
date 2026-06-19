@@ -47,13 +47,24 @@
   "keywords": [
     "react-native",
     "ios",
-    "android"
+    "android",
+    "web",
+    "expo",
+    "thumbnail",
+    "video-thumbnail",
+    "video",
+    "nitro",
+    "nitro-modules",
+    "new-architecture",
+    "avfoundation",
+    "mediametadataretriever",
+    "create-thumbnail"
   ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pythonsst/react-native-nitro-thumbnail.git"
   },
-  "author": "Shiv <shiv@cuepilot.ai> (https://github.com/cuepilot)",
+  "author": "Shiv <shiv@cuepilot.ai> (https://github.com/pythonsst)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/pythonsst/react-native-nitro-thumbnail/issues"

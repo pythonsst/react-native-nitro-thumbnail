@@ -1,0 +1,45 @@
+name: 💡 Feature request
+description: Suggest an idea or improvement for this library.
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to suggest an improvement! Please check the
+        [documentation](https://react-native-nitro-thumbnail.vercel.app) and existing
+        issues first to avoid duplicates.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem are you trying to solve?
+      description: A clear description of the use case or pain point.
+      placeholder: "I'm trying to … but currently …"
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: What would you like to happen? Include an API sketch if you have one.
+      placeholder: "createThumbnail({ …, newOption: true })"
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Any workarounds or other approaches you've thought about.
+    validations:
+      required: false
+  - type: dropdown
+    id: platforms
+    attributes:
+      label: Which platforms does this affect?
+      multiple: true
+      options:
+        - iOS
+        - Android
+        - Web
+        - All
+    validations:
+      required: true
