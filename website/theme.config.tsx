@@ -5,6 +5,35 @@ import { useConfig } from 'nextra-theme-docs';
 // (e.g. 'https://nitro-thumbnail.shivshankartiwari.com').
 const SITE_URL = 'https://react-native-nitro-thumbnail.vercel.app';
 
+// Structured data so Google understands this is an open-source software library.
+const JSON_LD = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      name: 'react-native-nitro-thumbnail',
+      url: SITE_URL,
+      description:
+        'Generate a thumbnail from any video — local or remote — with one async call. The same API on iOS, Android & Web. Nitro-powered.',
+    },
+    {
+      '@type': 'SoftwareSourceCode',
+      name: 'react-native-nitro-thumbnail',
+      description:
+        'Generate a thumbnail from a local or remote video with one async call, the same API on iOS, Android, and Web. Built on Nitro Modules (pure Swift & Kotlin), New Architecture.',
+      url: SITE_URL,
+      codeRepository:
+        'https://github.com/pythonsst/react-native-nitro-thumbnail',
+      programmingLanguage: ['TypeScript', 'Swift', 'Kotlin'],
+      runtimePlatform: 'React Native',
+      license: 'https://opensource.org/licenses/MIT',
+      author: { '@type': 'Person', name: 'Shiv' },
+      keywords:
+        'react-native, thumbnail, video, video-thumbnail, ios, android, web, nitro, expo',
+    },
+  ],
+};
+
 const Logo = () => (
   <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 700 }}>
     <span style={{ fontSize: '1.3rem' }}>🎬</span>
@@ -53,6 +82,10 @@ const config = {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="canonical" href={SITE_URL} />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
+        />
       </>
     );
   },
