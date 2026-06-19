@@ -1,0 +1,30 @@
+version: 2
+updates:
+  # GitHub Actions used in CI
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    labels: [dependencies]
+
+  # Library dev dependencies (root)
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 5
+    labels: [dependencies]
+    groups:
+      dev-dependencies:
+        patterns: ["*"]
+
+  # Documentation site
+  - package-ecosystem: npm
+    directory: /website
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 5
+    labels: [dependencies, docs]
+    groups:
+      website:
+        patterns: ["*"]

@@ -39,8 +39,8 @@ The single source of truth for the JS↔native boundary is
 | `android/.../HybridThumbnail.kt` | Android impl (`MediaMetadataRetriever`) |
 | `android/.../ThumbnailEncoderKt.kt` | Pure Android helpers, JUnit-covered |
 | `__tests__/` | Jest (node + jsdom) for the TS layer |
-| `docs/` | Markdown docs (architecture, api, error-handling, caching, migration, comparison, internals) |
-| `website/` | Nextra docs site (self-contained, **not** in the Yarn workspaces) → deployed on Vercel |
+| `website/` | **The docs** — Nextra (Next.js) site, MDX in `website/pages/`. Self-contained (not in the Yarn workspaces) → deployed on Vercel. Single source of truth. |
+| `docs/assets/` | Media referenced by the README + site (diagram, demo thumbnail/video). `docs/` holds no prose — docs live in `website/`. |
 | `nitrogen/`, `lib/` | **Generated** (gitignored). Never hand-edit. |
 
 ## Commands
@@ -75,7 +75,7 @@ Docs site: `cd website && npm install && npm run dev` (it's a separate npm proje
 Nitro only sends an error **message string** to JS. So native throws
 `RuntimeError("[CODE] message")` via the `err(...)` helper, and `toThumbnailError`
 parses that prefix back into a typed `ThumbnailError.code`. If you add native errors,
-use the existing `err()` helper. See [docs/error-handling.md](docs/error-handling.md).
+use the existing `err()` helper. See the [Error Handling guide](https://react-native-nitro-thumbnail.vercel.app/guides/error-handling).
 
 ## How to add an option (the dev loop)
 

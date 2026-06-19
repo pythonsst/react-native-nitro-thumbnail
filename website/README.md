@@ -34,9 +34,11 @@ website/
 └── next.config.mjs            # Nextra config (mermaid, copy-code)
 ```
 
-Content mirrors the markdown in [`../docs`](../docs); the MDX pages add a landing
-page, sidebar navigation, full-text search, dark mode, and client-rendered
-[mermaid](https://mermaid.js.org/) diagrams.
+This is the **single source of truth** for the documentation — authored as MDX with a
+landing page, sidebar navigation, full-text search, dark mode, and client-rendered
+[mermaid](https://mermaid.js.org/) diagrams. Shared media lives in
+[`../docs/assets`](../docs/assets) and is referenced via absolute raw URLs so it renders
+on npm too.
 
 ## Deploy to Vercel
 

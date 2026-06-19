@@ -66,6 +66,9 @@
   },
   "author": "Shiv <shiv@cuepilot.ai> (https://github.com/pythonsst)",
   "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
   "bugs": {
     "url": "https://github.com/pythonsst/react-native-nitro-thumbnail/issues"
   },
