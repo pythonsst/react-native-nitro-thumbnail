@@ -1,134 +1,131 @@
 ---
 title: Recipes
-description: Practical patterns — including showing a server thumbnail and only generating one as a fallback.
+description: The shipped <VideoThumbnail> component — server-first, shimmer loading, customizable play button — plus common patterns.
 ---
 
 import { Callout } from 'nextra/components'
 
 # Recipes
 
-Copy-paste patterns for common real-world needs.
+## `<VideoThumbnail>` — the drop-in tile
 
-## Server thumbnail first (generate only when missing)
+A ready-made, **fully customizable** thumbnail tile is shipped with the package:
 
-If your API already returns a thumbnail for a video, you should **show that and not
-generate anything**. `createThumbnail` is a single-purpose tool — *"here's a video, give
-me a frame"* — so the "do I even need to generate?" decision lives in your app.
+```tsx
+import { VideoThumbnail } from 'react-native-nitro-thumbnail';
+
+<VideoThumbnail
+  videoUrl={item.videoUrl}
+  serverThumbnail={item.thumbnailUrl}   // shown directly if present
+  isLoading={item.isFetching}           // your API loading state
+  onPress={() => openPlayer(item.videoUrl)}
+/>;
+```
+
+It handles the whole lifecycle:
 
 ```
-serverThumbnail provided?  ──yes──▶  show it        (createThumbnail never runs)
+serverThumbnail provided?  ──yes──▶  show it          (createThumbnail never runs)
         │ no
         ▼
-   generate it  ──▶  createThumbnail({ url })  ──▶  cache + show
+   generate it  ──▶  createThumbnail({ url })  ──▶  cache → show + play button
 ```
 
-<Callout type="info">
-A runnable version of everything below — all four cases side by side — is in the
-[example app](https://github.com/pythonsst/react-native-nitro-thumbnail/blob/main/example/src/RecipeScreen.tsx).
+- **Server-first** — if `serverThumbnail` is set, it's shown and **nothing is generated**.
+- **Shimmer while loading** — built-in `Animated` sweep (iOS + Android + Web), or pass your own `renderLoading`. Also driven by your `isLoading` prop.
+- **Play button overlay** — customizable color/size, or fully custom via `renderPlayButton`.
+- **Graceful failure** — a broken video shows an empty/placeholder state, never a crash.
+- **Zero extra dependencies.**
+
+<Callout type="warning">
+**"Play" is a callback, not a bundled player.** `onPress` fires when the tile is tapped —
+*you* open your video player / navigate. The library never depends on a video-player
+package, so it stays small and unopinionated.
 </Callout>
 
-### The reusable component
+### Props
+
+All props are optional except a source (`videoUrl` and/or `serverThumbnail`).
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `videoUrl` | `string \| null` | — | Video to generate from when there's no `serverThumbnail`. |
+| `serverThumbnail` | `string \| null` | — | A thumbnail URL from your API. If set, shown directly — no generation. |
+| `timeStamp` | `number` | `1000` | Frame to capture (ms) when generating. |
+| `format` / `maxWidth` / `maxHeight` / `headers` / `cacheName` | — | — | Passed straight to [`createThumbnail`](/guides/api-reference). |
+| `isLoading` | `boolean` | `false` | Force the loading (shimmer) state, e.g. while your API fetches. |
+| `renderLoading` | `() => ReactNode` | — | Replace the built-in shimmer. |
+| `shimmerColors` | `[string, string]` | `['#e2e8f0','#f8fafc']` | `[base, highlight]` for the built-in shimmer. |
+| `shimmerDuration` | `number` | `1200` | Shimmer sweep duration (ms). |
+| `showPlayButton` | `boolean` | `true` | Show the play overlay (requires `onPress`). |
+| `onPress` | `() => void` | — | Tile pressed — open your player here. |
+| `renderPlayButton` | `() => ReactNode` | — | Replace the built-in play button. |
+| `playButtonColor` / `playButtonBackgroundColor` / `playButtonSize` | `string` / `string` / `number` | `#fff` / `rgba(0,0,0,0.45)` / `56` | Theme the default play button. |
+| `width` / `height` / `borderRadius` / `resizeMode` / `backgroundColor` | — | `—/—/12/'cover'/#e2e8f0` | Appearance. |
+| `style` / `imageStyle` | `StyleProp` | — | Escape hatches for full styling. |
+| `renderError` | `() => ReactNode` | — | Custom error state. |
+| `onThumbnail` / `onError` | callbacks | — | Fired when a thumbnail is generated / fails. |
+
+### In a list
 
 ```tsx
-import * as React from 'react';
-import { Image, View, ActivityIndicator, StyleSheet } from 'react-native';
-import { createThumbnail, ThumbnailError } from 'react-native-nitro-thumbnail';
-
-type Props = {
-  videoUrl?: string | null;
-  serverThumbnail?: string | null; // the URL your API already returns, if any
-  timeStamp?: number;
-  width?: number;
-  height?: number;
-};
-
-export function VideoThumbnail({
-  videoUrl,
-  serverThumbnail,
-  timeStamp = 1000,
-  width = 160,
-  height = 90,
-}: Props) {
-  const [generated, setGenerated] = React.useState<string | null>(null);
-  const [loading, setLoading] = React.useState(false);
-
-  React.useEffect(() => {
-    // 1) Server already has one → show it, generate nothing.
-    if (serverThumbnail || !videoUrl) return;
-
-    // 2) Otherwise generate as a fallback (cached → decode once).
-    let alive = true;
-    setLoading(true);
-    createThumbnail({
-      url: videoUrl,
-      timeStamp,
-      cacheName: `vt-${stableKey(videoUrl)}-${timeStamp}`,
-    })
-      .then((t) => alive && setGenerated(t.path))
-      .catch((e) => {
-        if (e instanceof ThumbnailError) console.warn(`[${e.code}] ${e.message}`);
-      })
-      .finally(() => alive && setLoading(false));
-
-    return () => {
-      alive = false;
-    };
-  }, [videoUrl, serverThumbnail, timeStamp]);
-
-  const uri = serverThumbnail ?? generated;
-  const box = { width, height };
-
-  if (uri) return <Image source={{ uri }} style={[styles.thumb, box]} />;
-  return (
-    <View style={[styles.thumb, styles.center, box]}>
-      {loading ? <ActivityIndicator /> : null}
-    </View>
-  );
-}
-
-function stableKey(s: string) {
-  let h = 0;
-  for (let i = 0; i < s.length; i++) h = (Math.imul(31, h) + s.charCodeAt(i)) | 0;
-  return Math.abs(h).toString(36);
-}
-
-const styles = StyleSheet.create({
-  thumb: { borderRadius: 8, backgroundColor: '#e5e7eb' },
-  center: { alignItems: 'center', justifyContent: 'center' },
-});
-```
-
-### Using it in a list
-
-```tsx
-const videos = [
-  { id: '1', videoUrl: 'https://cdn.app/clip1.mp4', thumbnailUrl: 'https://cdn.app/clip1.jpg' },
-  { id: '2', videoUrl: 'https://cdn.app/clip2.mp4', thumbnailUrl: null },
-  { id: '3', videoUrl: 'file:///…/local.mp4',       thumbnailUrl: null },
-];
+import { FlatList } from 'react-native';
+import { VideoThumbnail } from 'react-native-nitro-thumbnail';
 
 <FlatList
   data={videos}
   keyExtractor={(v) => v.id}
   renderItem={({ item }) => (
-    <VideoThumbnail videoUrl={item.videoUrl} serverThumbnail={item.thumbnailUrl} />
+    <VideoThumbnail
+      width={160}
+      height={90}
+      videoUrl={item.videoUrl}
+      serverThumbnail={item.thumbnailUrl}
+      onPress={() => navigation.navigate('Player', { url: item.videoUrl })}
+    />
   )}
 />;
 ```
 
-### What happens in each case
+### Customizing it
 
-| Item | `serverThumbnail` | Behaviour |
-| --- | --- | --- |
-| #1 | ✅ set | Shows the server image **immediately**. `createThumbnail` is **never called**. |
-| #2 | ❌ null | Generates from the remote video, caches it, then shows it. |
-| #3 | ❌ null | Same fallback, from a local `file://` video. |
-| _bad URL_ | ❌ null | Generation fails → graceful placeholder, **no crash**. |
+```tsx
+// Dark shimmer + branded play button
+<VideoThumbnail
+  videoUrl={url}
+  shimmerColors={['#1f2937', '#374151']}
+  playButtonColor="#e0218a"
+  playButtonSize={64}
+  borderRadius={16}
+  onPress={open}
+/>
 
-The whole trick is the one line `if (serverThumbnail) return;` — when the server provides
-a thumbnail, the library does zero work.
+// Bring your own everything
+<VideoThumbnail
+  videoUrl={url}
+  renderLoading={() => <MyGradientShimmer />}
+  renderPlayButton={() => <MyPlayIcon />}
+  onPress={open}
+/>
+```
 
-<Callout type="warning">
-The library never auto-skips generation based on a server thumbnail, because it can't
-know about your backend. **You** decide whether to call it — that's by design.
+<Callout type="info">
+A runnable version of all four cases (server / remote / local / failure) plus the shimmer
+toggle is in the
+[example app](https://github.com/pythonsst/react-native-nitro-thumbnail/blob/main/example/src/RecipeScreen.tsx).
 </Callout>
+
+## Doing it yourself (headless)
+
+If you'd rather build your own UI, the rule is the same — call `createThumbnail` only
+when there's no server thumbnail:
+
+```tsx
+const uri = serverThumbnail ?? generated;
+React.useEffect(() => {
+  if (serverThumbnail || !videoUrl) return; // server has one → do nothing
+  createThumbnail({ url: videoUrl, cacheName: `vt-${videoUrl}` }).then((t) =>
+    setGenerated(t.path)
+  );
+}, [videoUrl, serverThumbnail]);
+```

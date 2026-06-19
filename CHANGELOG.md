@@ -8,6 +8,20 @@ All notable changes to this project are documented here. The format is based on
 
 _Nothing yet._
 
+## [0.1.3] - 2026-06-19
+
+### Added
+
+- **`VideoThumbnail` component** — an optional, fully-customizable thumbnail tile:
+  server-thumbnail-first, built-in shimmer while loading, a customizable play button, and
+  an `onPress` callback to open your video player. Zero extra dependencies; works on iOS,
+  Android, and Web.
+
+### Changed
+
+- Example app gained a runnable "server thumbnail first" showcase (all cases + shimmer
+  toggle) and uses Big Buck Bunny for the remote demo (colorful from the first frame).
+
 ## [0.1.2] - 2026-06-19
 
 ### Added
@@ -44,7 +58,8 @@ _Nothing yet._
 - Built-in caching: deterministic `cacheName` dedup and `dirSize` LRU eviction.
 - Drop-in compatibility with `react-native-create-thumbnail` (named + default export).
 
-[Unreleased]: https://github.com/pythonsst/react-native-nitro-thumbnail/compare/v0.1.2...HEAD
+[Unreleased]: https://github.com/pythonsst/react-native-nitro-thumbnail/compare/v0.1.3...HEAD
+[0.1.3]: https://github.com/pythonsst/react-native-nitro-thumbnail/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/pythonsst/react-native-nitro-thumbnail/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/pythonsst/react-native-nitro-thumbnail/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/pythonsst/react-native-nitro-thumbnail/releases/tag/v0.1.0

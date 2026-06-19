@@ -86,6 +86,7 @@ iPhone, an Android tablet, or in a browser.
 | 🧵 **Off the main thread** | Every call runs async on a background thread, so batch generation never janks your UI. |
 | 🎯 **Typed errors** | Failures reject with a `ThumbnailError` carrying a typed `.code` (`FILE_NOT_FOUND`, `REMOTE_FETCH_FAILED`, …). |
 | 💾 **Built-in caching** | Deterministic filenames skip re-decoding; a size cap evicts old thumbnails (LRU). Writes to the cache dir — never your gallery. |
+| 🖼️ **Ready-made UI (optional)** | A shipped, fully-customizable `<VideoThumbnail>` — server-first, shimmer loading, play button, `onPress` to open your player. Zero extra deps. |
 | 🔀 **Drop-in replacement** | Matches [`react-native-create-thumbnail`](https://www.npmjs.com/package/react-native-create-thumbnail) — usually a one-line import change. |
 | 🛡️ **Solves the known issues** | Built to avoid the [reported failure modes](https://react-native-nitro-thumbnail.vercel.app/guides/comparison) of older wrappers. |
 
@@ -232,6 +233,29 @@ Every failure is a typed `ThumbnailError extends Error`. Full descriptions in th
 📖 Full reference with recipes → **[API docs](https://react-native-nitro-thumbnail.vercel.app/guides/api-reference)**
 
 ---
+
+## 🖼️ `<VideoThumbnail>` — optional ready-made tile
+
+Don't want to wire up the UI yourself? Import the shipped component. It shows a server
+thumbnail if you have one, **otherwise generates one** (cached), with a **shimmer** while
+loading and a **play button** — fully themeable, zero extra dependencies.
+
+```tsx
+import { VideoThumbnail } from 'react-native-nitro-thumbnail';
+
+<VideoThumbnail
+  videoUrl={item.videoUrl}
+  serverThumbnail={item.thumbnailUrl}  // shown directly if present — no generation
+  isLoading={item.isFetching}          // your API loading → shimmer
+  onPress={() => openPlayer(item.videoUrl)}  // you open the player
+  playButtonColor="#fff"
+  shimmerColors={['#222', '#333']}
+/>;
+```
+
+> **"Play" is your callback, not a bundled player** — the library never depends on a
+> video-player package. Full props + customization in the
+> [Recipes guide](https://react-native-nitro-thumbnail.vercel.app/guides/recipes).
 
 ## 🛡️ Built to solve the known issues
 

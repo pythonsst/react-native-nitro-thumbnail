@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { VideoThumbnail } from './VideoThumbnail';
+import { View, Text, Button, Alert, StyleSheet } from 'react-native';
+import { VideoThumbnail } from 'react-native-nitro-thumbnail';
 import {
   REMOTE_SAMPLE,
   SERVER_THUMBNAIL,
@@ -9,51 +9,89 @@ import {
 } from './sample';
 
 /**
- * "Server thumbnail first" recipe — shows every case side by side so you can
- * see exactly when createThumbnail() runs (and when it doesn't).
+ * Showcase for the shipped <VideoThumbnail>: server-first, shimmer while
+ * loading, a customizable play button, and onPress to open the video.
  */
 export function RecipeScreen() {
-  // The local case needs a real on-device file:// path; resolve it once.
   const [localUri, setLocalUri] = React.useState<string | null>(null);
+  const [loading, setLoading] = React.useState(false);
+
   React.useEffect(() => {
-    resolveBundledSampleToFile().then(setLocalUri).catch(() => setLocalUri(null));
+    resolveBundledSampleToFile()
+      .then(setLocalUri)
+      .catch(() => setLocalUri(null));
   }, []);
+
+  const open = (label: string) =>
+    Alert.alert('Play', `Open your video player here → ${label}`);
 
   return (
     <View style={styles.section}>
-      <Text style={styles.heading}>Recipe: server thumbnail first</Text>
+      <Text style={styles.heading}>{'<VideoThumbnail>'} — shimmer + play</Text>
       <Text style={styles.intro}>
-        Pass <Text style={styles.code}>serverThumbnail</Text> when your API already has
-        one — the library generates nothing. Leave it empty and it falls back to{' '}
-        <Text style={styles.code}>createThumbnail()</Text>.
+        Server thumbnail if you have one, else it generates. Tap the play button
+        to open your player. Toggle the shimmer below.
       </Text>
+
+      <Button
+        title={loading ? 'Stop shimmer' : 'Show loading shimmer'}
+        onPress={() => setLoading((v) => !v)}
+      />
 
       <Case
         title="1 · Server has a thumbnail"
-        desc="serverThumbnail is set → shown directly, createThumbnail() never runs."
+        desc="serverThumbnail is shown directly — nothing is generated."
       >
-        <VideoThumbnail videoUrl={REMOTE_SAMPLE} serverThumbnail={SERVER_THUMBNAIL} />
+        <VideoThumbnail
+          width={150}
+          height={84}
+          videoUrl={REMOTE_SAMPLE}
+          serverThumbnail={SERVER_THUMBNAIL}
+          isLoading={loading}
+          onPress={() => open('server thumbnail')}
+        />
       </Case>
 
       <Case
-        title="2 · No server thumbnail (remote video)"
-        desc="serverThumbnail is empty → generated from the remote video, then cached."
+        title="2 · No server thumbnail (remote)"
+        desc="Generated from the remote video, then cached."
       >
-        <VideoThumbnail videoUrl={REMOTE_SAMPLE} serverThumbnail={null} timeStamp={1000} />
+        <VideoThumbnail
+          width={150}
+          height={84}
+          videoUrl={REMOTE_SAMPLE}
+          timeStamp={1000}
+          isLoading={loading}
+          onPress={() => open('remote video')}
+        />
       </Case>
 
       <Case
         title="3 · No server thumbnail (local file)"
-        desc="Same fallback, from a local file:// video."
+        desc="Same fallback from a local file:// video, with custom play color."
       >
-        <VideoThumbnail videoUrl={localUri} serverThumbnail={null} timeStamp={2000} />
+        <VideoThumbnail
+          width={150}
+          height={84}
+          videoUrl={localUri}
+          timeStamp={2000}
+          isLoading={loading}
+          playButtonColor="#e0218a"
+          onPress={() => open('local video')}
+        />
       </Case>
 
       <Case
         title="4 · Generation fails"
-        desc="A broken URL → graceful placeholder, no crash."
+        desc="A broken URL → graceful empty state, no crash."
       >
-        <VideoThumbnail videoUrl={BAD_VIDEO} serverThumbnail={null} />
+        <VideoThumbnail
+          width={150}
+          height={84}
+          videoUrl={BAD_VIDEO}
+          isLoading={loading}
+          onPress={() => open('(never — failed)')}
+        />
       </Case>
     </View>
   );
@@ -83,7 +121,6 @@ const styles = StyleSheet.create({
   section: { width: '100%', paddingHorizontal: 16, gap: 12 },
   heading: { fontSize: 16, fontWeight: '700' },
   intro: { color: '#374151', lineHeight: 20 },
-  code: { fontFamily: 'monospace', color: '#e0218a' },
   case: {
     flexDirection: 'row',
     alignItems: 'center',
