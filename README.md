@@ -1,39 +1,47 @@
 <div align="center">
 
+<br/>
+
 # 🎬 react-native-nitro-thumbnail
 
-### Generate a thumbnail from any video — local or remote — with one async call.
+### Generate a thumbnail from **any video** — local or remote — with one async call.
 
-**The same API on iOS, Android, and Web.** Powered by [Nitro](https://nitro.margelo.com/):
-pure **Swift** & **Kotlin**, New Architecture, no bridge.
+**The same API on iOS, Android & Web.** Powered by [Nitro](https://nitro.margelo.com/):
+pure Swift & Kotlin, New Architecture, no bridge.
 
 <br/>
 
 [![npm version](https://img.shields.io/npm/v/react-native-nitro-thumbnail.svg?style=flat-square&color=cb3837&logo=npm)](https://www.npmjs.com/package/react-native-nitro-thumbnail)
 [![npm downloads](https://img.shields.io/npm/dm/react-native-nitro-thumbnail.svg?style=flat-square&color=cb3837)](https://www.npmjs.com/package/react-native-nitro-thumbnail)
-[![license](https://img.shields.io/npm/l/react-native-nitro-thumbnail.svg?style=flat-square&color=blue)](./LICENSE)
+[![bundle size](https://img.shields.io/bundlephobia/minzip/react-native-nitro-thumbnail?style=flat-square&color=8b5cf6&label=min%2Bgzip)](https://bundlephobia.com/package/react-native-nitro-thumbnail)
+[![license](https://img.shields.io/npm/l/react-native-nitro-thumbnail.svg?style=flat-square&color=2563eb)](./LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6?style=flat-square&logo=typescript&logoColor=white)](./src/types.ts)
-[![docs](https://img.shields.io/badge/docs-live-2563eb?style=flat-square&logo=readme&logoColor=white)](https://react-native-nitro-thumbnail.vercel.app)
 
-[![platforms](https://img.shields.io/badge/platforms-iOS%20·%20Android%20·%20Web-success?style=flat-square)](#-platform-support)
+[![platforms](https://img.shields.io/badge/platforms-iOS%20·%20Android%20·%20Web-16a34a?style=flat-square)](#-platform-support)
 [![New Architecture](https://img.shields.io/badge/RN-New%20Architecture-61dafb?style=flat-square&logo=react)](https://reactnative.dev/architecture/landing-page)
-[![Nitro](https://img.shields.io/badge/powered%20by-Nitro%20Modules-ff69b4?style=flat-square)](https://nitro.margelo.com/)
-[![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square)](./CONTRIBUTING.md)
+[![powered by Nitro](https://img.shields.io/badge/powered%20by-Nitro%20Modules-e0218a?style=flat-square)](https://nitro.margelo.com/)
+[![PRs welcome](https://img.shields.io/badge/PRs-welcome-16a34a?style=flat-square)](./CONTRIBUTING.md)
+
+<br/>
+
+### [📖 **Read the Docs**](https://react-native-nitro-thumbnail.vercel.app) &nbsp;·&nbsp; [🚀 Quick Start](https://react-native-nitro-thumbnail.vercel.app/getting-started/quick-start) &nbsp;·&nbsp; [🧰 API](https://react-native-nitro-thumbnail.vercel.app/guides/api-reference) &nbsp;·&nbsp; [🔀 Migrate](https://react-native-nitro-thumbnail.vercel.app/guides/migration) &nbsp;·&nbsp; [🛡️ Issues Solved](https://react-native-nitro-thumbnail.vercel.app/guides/comparison)
 
 </div>
+
+<br/>
 
 ```ts
 import { createThumbnail } from 'react-native-nitro-thumbnail';
 
 const thumb = await createThumbnail({ url: 'https://media.example.com/clip.mp4' });
-// → { path: 'file:///…/thumb-xyz.jpg', size: 19856, mime: 'image/jpeg', width: 512, height: 288 }
+// → { path: 'file:///…/thumb.jpg', size: 19856, mime: 'image/jpeg', width: 512, height: 288 }
 
 <Image source={{ uri: thumb.path }} />
 ```
 
-That's the whole API. One function. It works the same whether the video is a
-`file://` on disk or an `https://` URL behind auth headers, and whether you're on
-an iPhone, an Android tablet, or in a browser.
+That's the whole API. **One function.** It works the same whether the video is a
+`file://` on disk or an `https://` URL behind auth headers — and whether you're on an
+iPhone, an Android tablet, or in a browser.
 
 ---
 
@@ -41,108 +49,60 @@ an iPhone, an Android tablet, or in a browser.
 
 <div align="center">
 
-<video src="https://raw.githubusercontent.com/pythonsst/react-native-nitro-thumbnail/main/example/assets/sample.mp4" poster="https://raw.githubusercontent.com/pythonsst/react-native-nitro-thumbnail/main/docs/assets/demo-thumbnail.jpg" controls muted loop width="720"></video>
-
-<p><em>▶︎ Press play — a 2K clip. (<a href="https://raw.githubusercontent.com/pythonsst/react-native-nitro-thumbnail/main/example/assets/sample.mp4">Open the video</a> if it doesn't load inline.)</em></p>
-
-<br/>
-
-**…and here's the thumbnail `createThumbnail()` extracts from it** — one call,
-one frame, scaled and encoded to a crisp 1280×546 JPEG:
-
-<img src="https://raw.githubusercontent.com/pythonsst/react-native-nitro-thumbnail/main/docs/assets/demo-thumbnail.jpg" alt="Thumbnail produced by createThumbnail() from the demo video" width="720" />
-
-</div>
-
-```ts
-const thumb = await createThumbnail({ url, timeStamp: 2000, maxWidth: 1280 });
-// → { path: '…/thumb.jpg', size: 95_072, mime: 'image/jpeg', width: 1280, height: 546 }
-```
-
-> Demo clip: **[Sintel](https://www.sintel.org)** © Blender Foundation, licensed
-> [CC-BY 3.0](https://creativecommons.org/licenses/by/3.0/). Bundled in
-> [`example/`](./example) so you can run the demo yourself.
-
-### …and running on iOS
-
-<div align="center">
-
-<video src="https://raw.githubusercontent.com/pythonsst/react-native-nitro-thumbnail/main/docs/assets/demo-ios.mp4" poster="https://raw.githubusercontent.com/pythonsst/react-native-nitro-thumbnail/main/docs/assets/demo-ios-poster.jpg" controls muted loop playsinline width="300"></video>
-
-<p><em>The bundled <a href="./example">example app</a> generating a thumbnail on iOS — one call, off the main thread, no UI jank. (Android demo on a physical device coming soon.)</em></p>
-
-</div>
-
----
-
-## ✨ Why this library?
+<video src="https://raw.githubusercontent.com/pythonsst/react-native-nitro-thumbnail/main/example/assets/sample.mp4" poster="https://raw.githubusercontent.com/pythonsst/react-native-nitro-thumbnail/main/docs/assets/demo-thumbnail.jpg" controls muted loop width="640"></video>
 
 <table>
 <tr>
-<td width="50%" valign="top">
+<td align="center" width="62%">
 
-**🧩 One API, three engines**
-iOS (`AVFoundation`), Android (`MediaMetadataRetriever`), and Web
-(`<video>` + `<canvas>`) all behind a single typed function. Your call sites
-never branch on platform.
+**The frame `createThumbnail()` extracts** — `{ timeStamp: 2000, maxWidth: 1280 }`
 
-**🌐 Local & remote, no download step**
-Pass a `file://` path or an `http(s)` URL. Remote videos are **streamed and
-decoded directly** — only the bytes needed to reach your frame. Custom request
-`headers` (e.g. `Authorization`) are supported.
-
-**⚡ Built on Nitro**
-Pure Swift & Kotlin over JSI — no Objective-C/Java bridge, no JSON marshalling.
-The native contract is **generated** from one TypeScript spec, so it can't drift.
+<img src="https://raw.githubusercontent.com/pythonsst/react-native-nitro-thumbnail/main/docs/assets/demo-thumbnail.jpg" alt="Thumbnail produced by createThumbnail()" width="100%" />
 
 </td>
-<td width="50%" valign="top">
+<td align="center" width="38%">
 
-**🎯 Typed errors, not opaque strings**
-Every failure rejects with a `ThumbnailError` carrying a typed `.code`
-(`FILE_NOT_FOUND`, `REMOTE_FETCH_FAILED`, …) you can `switch` on.
+**Running on iOS** &nbsp;[▶︎ clip](https://raw.githubusercontent.com/pythonsst/react-native-nitro-thumbnail/main/docs/assets/demo-ios.mp4)
 
-**💾 Built-in caching**
-Deterministic filenames (`cacheName`) skip re-decoding entirely; a size cap
-(`dirSize`) evicts old thumbnails (LRU) so the cache never grows unbounded.
-
-**🔀 Drop-in replacement**
-Matches [`react-native-create-thumbnail`](https://www.npmjs.com/package/react-native-create-thumbnail)'s
-options, result shape, defaults, and exports — migrating is usually a one-line
-import change.
+<a href="https://raw.githubusercontent.com/pythonsst/react-native-nitro-thumbnail/main/docs/assets/demo-ios.mp4"><img src="https://raw.githubusercontent.com/pythonsst/react-native-nitro-thumbnail/main/docs/assets/demo-ios-poster.jpg" alt="The example app generating a thumbnail on iOS" width="100%" /></a>
 
 </td>
 </tr>
 </table>
 
+<sub>Demo clip: <a href="https://www.sintel.org">Sintel</a> © Blender Foundation, CC-BY 3.0.</sub>
+
+</div>
+
+---
+
+## ✨ Features
+
+|  |  |
+|---|---|
+| 🧩 **One API, three engines** | iOS (`AVFoundation`), Android (`MediaMetadataRetriever`), Web (`<video>`+`<canvas>`) behind one typed function. |
+| 🌐 **Local & remote** | `file://`, absolute paths, `content://` (Android), or `http(s)` URLs — streamed and decoded directly, no manual download. Custom `headers` supported. |
+| ⚡ **Built on Nitro** | Pure Swift & Kotlin over JSI — no Obj-C/Java bridge, no JSON marshalling. The native contract is generated from one TS spec. |
+| 🧵 **Off the main thread** | Every call runs async on a background thread, so batch generation never janks your UI. |
+| 🎯 **Typed errors** | Failures reject with a `ThumbnailError` carrying a typed `.code` (`FILE_NOT_FOUND`, `REMOTE_FETCH_FAILED`, …). |
+| 💾 **Built-in caching** | Deterministic filenames skip re-decoding; a size cap evicts old thumbnails (LRU). Writes to the cache dir — never your gallery. |
+| 🔀 **Drop-in replacement** | Matches [`react-native-create-thumbnail`](https://www.npmjs.com/package/react-native-create-thumbnail) — usually a one-line import change. |
+| 🛡️ **Solves the known issues** | Built to avoid the [reported failure modes](https://react-native-nitro-thumbnail.vercel.app/guides/comparison) of older wrappers. |
+
 ---
 
 ## 🗺️ How it works
 
-One TypeScript function validates your input and applies defaults, then calls a
-Nitro `HybridObject` implemented natively per platform. The box labelled "your
-app" never changes — only the engine behind it does.
+One TypeScript function validates your input and applies defaults, then calls a Nitro
+`HybridObject` implemented natively per platform. **The box labelled "your app" never
+changes — only the engine behind it does.**
 
-```mermaid
-flowchart LR
-    A["📱 Your app<br/>await createThumbnail({…})"] --> B
+<div align="center">
+<img src="https://raw.githubusercontent.com/pythonsst/react-native-nitro-thumbnail/main/docs/assets/architecture.png" alt="Architecture: one createThumbnail() call decoded natively on iOS, Android, and Web" width="100%" />
+</div>
 
-    subgraph TS["TypeScript · shared"]
-        B["validate + defaults"]
-    end
-
-    B -->|NativeThumbnailOptions| C{Platform}
-
-    C -->|iOS| D["🍎 Swift<br/>AVAssetImageGenerator"]
-    C -->|Android| E["🤖 Kotlin<br/>MediaMetadataRetriever"]
-    C -->|Web| F["🌐 DOM<br/>video → canvas"]
-
-    D & E & F --> G["✅ Thumbnail<br/>{ path, size, mime, width, height }"]
-    G --> A
-```
-
-The complete request lifecycle — cache check, decode, encode, write, evict — is
-documented in **[docs/architecture.md](./docs/architecture.md)**.
+> 📖 The complete request lifecycle — cache check, decode, encode, write, evict — with
+> sequence diagrams, lives in the [Architecture guide](https://react-native-nitro-thumbnail.vercel.app/guides/architecture).
 
 ---
 
@@ -150,12 +110,10 @@ documented in **[docs/architecture.md](./docs/architecture.md)**.
 
 ```sh
 npm install react-native-nitro-thumbnail react-native-nitro-modules
-# or
-yarn add react-native-nitro-thumbnail react-native-nitro-modules
+# or: yarn add react-native-nitro-thumbnail react-native-nitro-modules
 ```
 
-`react-native-nitro-modules` is a **required peer dependency** — it provides the
-Nitro runtime.
+`react-native-nitro-modules` is a **required peer dependency** (the Nitro runtime).
 
 **iOS** — install pods:
 
@@ -163,8 +121,8 @@ Nitro runtime.
 cd ios && pod install
 ```
 
-**Expo** — this is a native module, so it needs an **Expo dev build** (it does
-**not** run in Expo Go). No config plugin required:
+**Expo** — needs an [Expo dev build](https://docs.expo.dev/develop/development-builds/introduction/)
+(not Expo Go). No config plugin required:
 
 ```sh
 npx expo install react-native-nitro-thumbnail react-native-nitro-modules
@@ -183,7 +141,7 @@ import { createThumbnail, ThumbnailError } from 'react-native-nitro-thumbnail';
 async function makeThumb(videoUri: string) {
   try {
     const thumb = await createThumbnail({
-      url: videoUri,     // 'file:///…' or 'https://…'
+      url: videoUri,     // 'file:///…', 'content://…' (Android), or 'https://…'
       timeStamp: 1000,   // grab the frame at 1.0s (milliseconds)
       format: 'jpeg',    // 'jpeg' | 'png'
       maxWidth: 512,     // fit within 512×512, aspect preserved, never upscaled
@@ -211,22 +169,20 @@ async function makeThumb(videoUri: string) {
 | 🤖 **Android** | `MediaMetadataRetriever` | minSdk 24 | `getScaledFrameAtTime` on API 27+, scale-after fallback below |
 | 🌐 **Web** | `<video>` → `<canvas>` → `toBlob` | modern browsers | resolved automatically via `index.web.ts` |
 
-Requires React Native **0.75+** with the **New Architecture** enabled.
-
 ---
 
-## 🧰 API at a glance
+## 🧰 API
 
-```ts
-createThumbnail(options: CreateThumbnailOptions): Promise<Thumbnail>
-```
+`createThumbnail(options: CreateThumbnailOptions): Promise<Thumbnail>`
 
 <details open>
 <summary><b>Options</b></summary>
 
+<br/>
+
 | Option | Type | Default | Description |
 |---|---|---|---|
-| `url` | `string` | **required** | Local `file://`/absolute path, or an `http(s)` URL. |
+| `url` | `string` | **required** | Local `file://`/absolute path, `content://` (Android), or `http(s)` URL. |
 | `timeStamp` | `number` | `0` | Frame time in **milliseconds**. |
 | `format` | `'jpeg' \| 'png'` | `'jpeg'` | Output format. |
 | `maxWidth` | `number` | `512` | Max width — aspect preserved, never upscaled. |
@@ -235,13 +191,15 @@ createThumbnail(options: CreateThumbnailOptions): Promise<Thumbnail>
 | `cacheName` | `string` | — | Deterministic filename; existing file returned **without re-decoding**. |
 | `dirSize` | `number` | `100` | Cache cap in **MB** (LRU eviction). |
 | `headers` | `Record<string,string>` | — | HTTP headers for remote fetches. |
-| `timeToleranceMs` | `number` | `2000` | How far from `timeStamp` a frame may be picked. |
+| `timeToleranceMs` | `number` | `2000` | How far from `timeStamp` a frame may be picked (`0` = exact). |
 | `onlySyncedFrames` | `boolean` | `true` | Prefer the nearest keyframe (faster). |
 
 </details>
 
 <details>
 <summary><b>Result — <code>Thumbnail</code></b></summary>
+
+<br/>
 
 ```ts
 interface Thumbnail {
@@ -253,25 +211,50 @@ interface Thumbnail {
 }
 ```
 
+On native, `path` is a `file://` URL in the app cache dir. On web it's an object URL —
+call `URL.revokeObjectURL(path)` when done.
+
 </details>
 
 <details>
 <summary><b>Errors — <code>ThumbnailError.code</code></b></summary>
 
+<br/>
+
 `INVALID_URL` · `FILE_NOT_FOUND` · `REMOTE_FETCH_FAILED` · `DECODE_FAILED` ·
 `UNSUPPORTED_FORMAT` · `WRITE_FAILED` · `UNKNOWN`
 
-Full descriptions in **[docs/error-handling.md](./docs/error-handling.md)**.
+Every failure is a typed `ThumbnailError extends Error`. Full descriptions in the
+[Error Handling guide](https://react-native-nitro-thumbnail.vercel.app/guides/error-handling).
 
 </details>
 
-Full reference: **[docs/api-reference.md](./docs/api-reference.md)**.
+📖 Full reference with recipes → **[API docs](https://react-native-nitro-thumbnail.vercel.app/guides/api-reference)**
+
+---
+
+## 🛡️ Built to solve the known issues
+
+This library was written knowing the common failure modes of video-thumbnail wrappers.
+The pain points reported against older libraries are **solved by design**:
+
+- ✅ **No Android build breakage** — Kotlin (no checked-`IOException`), modern AGP, no jcenter, no Apache Commons.
+- ✅ **Remote URLs never crash** — network failures reject with a typed `REMOTE_FETCH_FAILED`.
+- ✅ **No UI jank** — decoding runs off the main thread via Nitro `Promise.async`.
+- ✅ **`content://` gallery videos work** on Android.
+- ✅ **No gallery pollution** — thumbnails go to the cache dir, not MediaStore.
+- ✅ **Typed errors, never a silent `null`.**
+
+📖 See the full issue-by-issue breakdown → **[Issues Solved](https://react-native-nitro-thumbnail.vercel.app/guides/comparison)**
 
 ---
 
 ## 💡 Examples
 
-**Remote video with auth headers**
+<details>
+<summary><b>Remote video with auth headers</b></summary>
+
+<br/>
 
 ```ts
 const thumb = await createThumbnail({
@@ -281,13 +264,12 @@ const thumb = await createThumbnail({
 });
 ```
 
-**PNG output**
+</details>
 
-```ts
-const thumb = await createThumbnail({ url, format: 'png' }); // quality ignored
-```
+<details>
+<summary><b>Deterministic cache — decode once, reuse forever</b></summary>
 
-**Deterministic cache — decode once, reuse forever**
+<br/>
 
 ```ts
 // First call decodes and writes thumbnails/poster-42.jpg
@@ -296,7 +278,12 @@ await createThumbnail({ url, cacheName: 'poster-42' });
 const cached = await createThumbnail({ url, cacheName: 'poster-42' });
 ```
 
-**Typed error handling**
+</details>
+
+<details>
+<summary><b>Typed error handling</b></summary>
+
+<br/>
 
 ```ts
 try {
@@ -308,71 +295,38 @@ try {
 }
 ```
 
-There's a runnable demo (local + remote, on a button tap) in
-**[`example/`](./example)**.
+</details>
 
----
-
-## 🔀 Migrating from `react-native-create-thumbnail`
-
-It's a drop-in replacement — in most apps the switch is just the import:
-
-```diff
-- import { createThumbnail } from 'react-native-create-thumbnail';
-+ import { createThumbnail } from 'react-native-nitro-thumbnail';
-```
-
-Same options, same result, same defaults, both import styles. The differences:
-typed `ThumbnailError.code`, a stricter `headers` type, a new `quality` option,
-**and** it runs on Web. New-Architecture-only and needs
-`react-native-nitro-modules`. Full guide: **[docs/migration.md](./docs/migration.md)**.
+There's a runnable demo (local + remote, on a button tap) in [`example/`](./example).
 
 ---
 
 ## 📚 Documentation
 
-📖 **Live docs: [react-native-nitro-thumbnail.vercel.app](https://react-native-nitro-thumbnail.vercel.app)**
-— a full Nextra site with landing page, sidebar nav, search, dark mode, and rendered
-diagrams (source in [`website/`](./website)). Run it locally with
-`cd website && npm install && npm run dev`.
+Everything lives on the **[documentation site →](https://react-native-nitro-thumbnail.vercel.app)**
 
-The same content also lives as deep, diagram-rich guides in **[`docs/`](./docs)**:
-
-| Guide | What's inside |
-|---|---|
-| 🏛️ [Architecture](./docs/architecture.md) | The TS → Nitro → native flow, the four layers, full request lifecycle. |
-| 📖 [API Reference](./docs/api-reference.md) | Every option & result field, with recipes. |
-| ⚠️ [Error Handling](./docs/error-handling.md) | The seven codes + the `[CODE]`-prefix bridging trick. |
-| 💾 [Caching](./docs/caching.md) | `cacheName` dedup + `dirSize` LRU eviction, explained. |
-| 🍎 [iOS](./docs/platforms/ios.md) · 🤖 [Android](./docs/platforms/android.md) · 🌐 [Web](./docs/platforms/web.md) | Annotated native implementations. |
-| 🔀 [Migration](./docs/migration.md) | Switching from `react-native-create-thumbnail`. |
-| 🛡️ [Issues Solved](./docs/comparison.md) | How this library avoids the reported failure modes of older wrappers. |
-| 🛠️ [Internals & Contributing](./docs/internals.md) | Build pipeline, repo layout, testing, how to hack on it. |
-
-Start with **[Architecture](./docs/architecture.md)** — everything else zooms in
-on it.
+| | | |
+|---|---|---|
+| [🏛️ Architecture](https://react-native-nitro-thumbnail.vercel.app/guides/architecture) | [📖 API Reference](https://react-native-nitro-thumbnail.vercel.app/guides/api-reference) | [⚠️ Error Handling](https://react-native-nitro-thumbnail.vercel.app/guides/error-handling) |
+| [💾 Caching](https://react-native-nitro-thumbnail.vercel.app/guides/caching) | [🔀 Migration](https://react-native-nitro-thumbnail.vercel.app/guides/migration) | [🛡️ Issues Solved](https://react-native-nitro-thumbnail.vercel.app/guides/comparison) |
+| [🍎 iOS](https://react-native-nitro-thumbnail.vercel.app/platforms/ios) | [🤖 Android](https://react-native-nitro-thumbnail.vercel.app/platforms/android) | [🌐 Web](https://react-native-nitro-thumbnail.vercel.app/platforms/web) |
 
 ---
 
 ## 🤝 Contributing
 
-Contributions of every size are welcome — and a great first PR is improving a doc
-you found confusing while reading the [`docs/`](./docs).
+PRs of every size are welcome — a great first one is improving a doc you found confusing.
 
-- 🛠️ [How the project is built & how to make a change](./docs/internals.md)
-- 📋 [Development workflow](./CONTRIBUTING.md#development-workflow) · [Sending a pull request](./CONTRIBUTING.md#sending-a-pull-request)
-- 🤗 [Code of conduct](./CODE_OF_CONDUCT.md)
-- 🐛 [Open an issue](https://github.com/pythonsst/react-native-nitro-thumbnail/issues)
+- 🛠️ [How the project is built & how to make a change](https://react-native-nitro-thumbnail.vercel.app/contributing)
+- 📋 [Development workflow](./CONTRIBUTING.md) · 🤗 [Code of conduct](./CODE_OF_CONDUCT.md) · 🐛 [Open an issue](https://github.com/pythonsst/react-native-nitro-thumbnail/issues)
 
 ```sh
 yarn            # install (Yarn 4 workspaces)
 yarn nitrogen   # regenerate native specs after editing *.nitro.ts
 yarn test       # Jest (TypeScript layer)
-yarn typecheck  # tsc
-yarn lint       # eslint
 ```
 
-If you find this useful, a ⭐ on the repo genuinely helps others discover it.
+If this saved you time, a ⭐ on the repo helps others find it.
 
 ---
 
@@ -381,5 +335,5 @@ If you find this useful, a ⭐ on the repo genuinely helps others discover it.
 [MIT](./LICENSE) © contributors
 
 <div align="center">
-<sub>Built with <a href="https://nitro.margelo.com/">Nitro Modules</a> · scaffolded with <a href="https://github.com/callstack/react-native-builder-bob">create-react-native-library</a></sub>
+<sub>Built with <a href="https://nitro.margelo.com/">Nitro Modules</a> · docs powered by <a href="https://nextra.site/">Nextra</a></sub>
 </div>

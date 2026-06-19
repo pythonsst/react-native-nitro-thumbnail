@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 560" font-family="-apple-system, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8"/>
+    </marker>
+    <style>
+      .lbl   { font-size: 14px; font-weight: 700; letter-spacing: 1.5px; }
+      .code  { font-family: 'SF Mono','Menlo',monospace; font-size: 16px; }
+      .codeS { font-family: 'SF Mono','Menlo',monospace; font-size: 14px; }
+      .edge  { stroke: #94a3b8; stroke-width: 2.5; fill: none; }
+    </style>
+  </defs>
+
+  <rect x="6" y="6" width="1228" height="548" rx="22" fill="#ffffff" stroke="#e5e7eb" stroke-width="2"/>
+
+  <text x="620" y="48" text-anchor="middle" font-size="26" font-weight="800" fill="#0f172a">One API · three native engines</text>
+  <text x="620" y="74" text-anchor="middle" font-size="15" fill="#64748b">The same createThumbnail() call, decoded natively per platform</text>
+
+  <!-- YOUR APP -->
+  <rect x="40" y="230" width="220" height="110" rx="14" fill="#0f172a"/>
+  <text x="150" y="268" text-anchor="middle" class="lbl" fill="#94a3b8">YOUR APP</text>
+  <text x="150" y="298" text-anchor="middle" class="codeS" fill="#ffffff">await</text>
+  <text x="150" y="320" text-anchor="middle" class="codeS" fill="#7dd3fc">createThumbnail()</text>
+
+  <!-- TYPESCRIPT -->
+  <rect x="310" y="230" width="200" height="110" rx="14" fill="#fdf2f8" stroke="#e0218a" stroke-width="2"/>
+  <text x="410" y="268" text-anchor="middle" class="lbl" fill="#e0218a">TYPESCRIPT</text>
+  <text x="410" y="296" text-anchor="middle" font-size="15" fill="#831843">validate +</text>
+  <text x="410" y="318" text-anchor="middle" font-size="15" fill="#831843">apply defaults</text>
+
+  <!-- PLATFORMS -->
+  <rect x="560" y="92" width="340" height="104" rx="14" fill="#f8fafc" stroke="#0ea5e9" stroke-width="2"/>
+  <text x="584" y="132" class="lbl" fill="#0ea5e9">iOS · SWIFT</text>
+  <text x="584" y="162" class="code" fill="#0f172a">AVAssetImageGenerator</text>
+
+  <rect x="560" y="232" width="340" height="104" rx="14" fill="#f8fafc" stroke="#16a34a" stroke-width="2"/>
+  <text x="584" y="272" class="lbl" fill="#16a34a">ANDROID · KOTLIN</text>
+  <text x="584" y="302" class="code" fill="#0f172a">MediaMetadataRetriever</text>
+
+  <rect x="560" y="372" width="340" height="104" rx="14" fill="#f8fafc" stroke="#7c3aed" stroke-width="2"/>
+  <text x="584" y="412" class="lbl" fill="#7c3aed">WEB · DOM</text>
+  <text x="584" y="442" class="code" fill="#0f172a">video to canvas</text>
+
+  <!-- RESULT -->
+  <rect x="950" y="230" width="250" height="110" rx="14" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/>
+  <text x="1075" y="268" text-anchor="middle" class="lbl" fill="#047857">THUMBNAIL</text>
+  <text x="1075" y="296" text-anchor="middle" class="codeS" fill="#065f46">path · size · mime</text>
+  <text x="1075" y="318" text-anchor="middle" class="codeS" fill="#065f46">width · height</text>
+
+  <!-- edges -->
+  <path class="edge" d="M 260 285 L 305 285" marker-end="url(#arrow)"/>
+  <path class="edge" d="M 510 270 C 535 250, 540 160, 555 150" marker-end="url(#arrow)"/>
+  <path class="edge" d="M 510 285 L 555 285" marker-end="url(#arrow)"/>
+  <path class="edge" d="M 510 300 C 535 320, 540 410, 555 418" marker-end="url(#arrow)"/>
+  <path class="edge" d="M 900 150 C 920 160, 925 250, 945 268" marker-end="url(#arrow)"/>
+  <path class="edge" d="M 900 285 L 945 285" marker-end="url(#arrow)"/>
+  <path class="edge" d="M 900 418 C 920 410, 925 320, 945 302" marker-end="url(#arrow)"/>
+</svg>
