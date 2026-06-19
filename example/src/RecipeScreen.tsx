@@ -39,7 +39,7 @@ export function RecipeScreen() {
         title="2 · No server thumbnail (remote video)"
         desc="serverThumbnail is empty → generated from the remote video, then cached."
       >
-        <VideoThumbnail videoUrl={REMOTE_SAMPLE} serverThumbnail={null} timeStamp={2000} />
+        <VideoThumbnail videoUrl={REMOTE_SAMPLE} serverThumbnail={null} timeStamp={1000} />
       </Case>
 
       <Case

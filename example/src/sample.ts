@@ -5,8 +5,10 @@ import * as RNFS from '@dr.pogodin/react-native-fs';
 // Foundation). Metro serves it over http in dev and bundles it in release.
 export const SAMPLE = require('../assets/sample.mp4');
 
-// A public remote video to demo streaming-thumbnail extraction (no download step).
-export const REMOTE_SAMPLE = 'https://media.w3.org/2010/05/sintel/trailer.mp4';
+// A public remote video (Big Buck Bunny, CC-BY) to demo streaming-thumbnail
+// extraction — colorful from the very first frame, so any timestamp looks nice.
+export const REMOTE_SAMPLE =
+  'https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/360/Big_Buck_Bunny_360_10s_1MB.mp4';
 
 // A public still image standing in for "a thumbnail your server already returns".
 export const SERVER_THUMBNAIL = 'https://picsum.photos/id/1043/640/360';
