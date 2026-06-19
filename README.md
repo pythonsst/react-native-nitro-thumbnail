@@ -13,6 +13,7 @@ pure **Swift** & **Kotlin**, New Architecture, no bridge.
 [![npm downloads](https://img.shields.io/npm/dm/react-native-nitro-thumbnail.svg?style=flat-square&color=cb3837)](https://www.npmjs.com/package/react-native-nitro-thumbnail)
 [![license](https://img.shields.io/npm/l/react-native-nitro-thumbnail.svg?style=flat-square&color=blue)](./LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6?style=flat-square&logo=typescript&logoColor=white)](./src/types.ts)
+[![docs](https://img.shields.io/badge/docs-live-2563eb?style=flat-square&logo=readme&logoColor=white)](https://react-native-nitro-thumbnail.vercel.app)
 
 [![platforms](https://img.shields.io/badge/platforms-iOS%20·%20Android%20·%20Web-success?style=flat-square)](#-platform-support)
 [![New Architecture](https://img.shields.io/badge/RN-New%20Architecture-61dafb?style=flat-square&logo=react)](https://reactnative.dev/architecture/landing-page)
@@ -330,11 +331,10 @@ typed `ThumbnailError.code`, a stricter `headers` type, a new `quality` option,
 
 ## 📚 Documentation
 
-There's a full **documentation site** (Nextra) in [`website/`](./website) — landing
-page, sidebar nav, search, dark mode, and rendered diagrams. Once deployed it lives at
-**[nitro-thumbnail.shivshankartiwari.com](https://nitro-thumbnail.shivshankartiwari.com)**.
-Run it locally with `cd website && npm install && npm run dev`, or deploy it to Vercel
-(see [website/README.md](./website/README.md)).
+📖 **Live docs: [react-native-nitro-thumbnail.vercel.app](https://react-native-nitro-thumbnail.vercel.app)**
+— a full Nextra site with landing page, sidebar nav, search, dark mode, and rendered
+diagrams (source in [`website/`](./website)). Run it locally with
+`cd website && npm install && npm run dev`.
 
 The same content also lives as deep, diagram-rich guides in **[`docs/`](./docs)**:
 

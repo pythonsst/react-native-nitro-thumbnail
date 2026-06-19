@@ -1,7 +1,9 @@
 import React from 'react';
 import { useConfig } from 'nextra-theme-docs';
 
-const SITE_URL = 'https://nitro-thumbnail.shivshankartiwari.com';
+// Live deployment. Change to your custom domain once it's added in Vercel
+// (e.g. 'https://nitro-thumbnail.shivshankartiwari.com').
+const SITE_URL = 'https://react-native-nitro-thumbnail.vercel.app';
 
 const Logo = () => (
   <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 700 }}>
