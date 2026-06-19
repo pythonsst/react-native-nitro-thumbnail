@@ -8,7 +8,7 @@ All notable changes to this project are documented here. The format is based on
 
 _Nothing yet._
 
-## [0.1.3] - 2026-06-19
+## [0.1.4] - 2026-06-19
 
 ### Added
 
@@ -21,6 +21,14 @@ _Nothing yet._
 
 - Example app gained a runnable "server thumbnail first" showcase (all cases + shimmer
   toggle) and uses Big Buck Bunny for the remote demo (colorful from the first frame).
+- Documentation site: SEO essentials (sitemap.xml, robots.txt, JSON-LD structured data).
+
+## [0.1.3] - 2026-06-19
+
+### Changed
+
+- Metadata only: expanded npm `keywords`, added `engines.node`, and corrected the
+  repository-owner metadata (package `author`). No runtime/API changes.
 
 ## [0.1.2] - 2026-06-19
 
@@ -58,7 +66,8 @@ _Nothing yet._
 - Built-in caching: deterministic `cacheName` dedup and `dirSize` LRU eviction.
 - Drop-in compatibility with `react-native-create-thumbnail` (named + default export).
 
-[Unreleased]: https://github.com/pythonsst/react-native-nitro-thumbnail/compare/v0.1.3...HEAD
+[Unreleased]: https://github.com/pythonsst/react-native-nitro-thumbnail/compare/v0.1.4...HEAD
+[0.1.4]: https://github.com/pythonsst/react-native-nitro-thumbnail/compare/v0.1.3...v0.1.4
 [0.1.3]: https://github.com/pythonsst/react-native-nitro-thumbnail/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/pythonsst/react-native-nitro-thumbnail/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/pythonsst/react-native-nitro-thumbnail/compare/v0.1.0...v0.1.1
