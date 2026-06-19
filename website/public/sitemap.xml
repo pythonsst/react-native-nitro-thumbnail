@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://react-native-nitro-thumbnail.vercel.app/</loc><lastmod>2026-06-19</lastmod><priority>1.0</priority></url>
+  <url><loc>https://react-native-nitro-thumbnail.vercel.app/getting-started/installation</loc><lastmod>2026-06-19</lastmod><priority>0.9</priority></url>
+  <url><loc>https://react-native-nitro-thumbnail.vercel.app/getting-started/quick-start</loc><lastmod>2026-06-19</lastmod><priority>0.9</priority></url>
+  <url><loc>https://react-native-nitro-thumbnail.vercel.app/guides/architecture</loc><lastmod>2026-06-19</lastmod><priority>0.8</priority></url>
+  <url><loc>https://react-native-nitro-thumbnail.vercel.app/guides/api-reference</loc><lastmod>2026-06-19</lastmod><priority>0.8</priority></url>
+  <url><loc>https://react-native-nitro-thumbnail.vercel.app/guides/error-handling</loc><lastmod>2026-06-19</lastmod><priority>0.7</priority></url>
+  <url><loc>https://react-native-nitro-thumbnail.vercel.app/guides/caching</loc><lastmod>2026-06-19</lastmod><priority>0.7</priority></url>
+  <url><loc>https://react-native-nitro-thumbnail.vercel.app/guides/recipes</loc><lastmod>2026-06-19</lastmod><priority>0.7</priority></url>
+  <url><loc>https://react-native-nitro-thumbnail.vercel.app/guides/migration</loc><lastmod>2026-06-19</lastmod><priority>0.7</priority></url>
+  <url><loc>https://react-native-nitro-thumbnail.vercel.app/guides/comparison</loc><lastmod>2026-06-19</lastmod><priority>0.7</priority></url>
+  <url><loc>https://react-native-nitro-thumbnail.vercel.app/platforms/ios</loc><lastmod>2026-06-19</lastmod><priority>0.6</priority></url>
+  <url><loc>https://react-native-nitro-thumbnail.vercel.app/platforms/android</loc><lastmod>2026-06-19</lastmod><priority>0.6</priority></url>
+  <url><loc>https://react-native-nitro-thumbnail.vercel.app/platforms/web</loc><lastmod>2026-06-19</lastmod><priority>0.6</priority></url>
+  <url><loc>https://react-native-nitro-thumbnail.vercel.app/contributing</loc><lastmod>2026-06-19</lastmod><priority>0.5</priority></url>
+</urlset>
