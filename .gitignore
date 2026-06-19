@@ -87,3 +87,7 @@ nitrogen/
 
 # Kotlin compiler daemon cache
 .kotlin/
+
+# Internal planning/spec docs + local agent state (not for the public repo)
+docs/superpowers/
+.claude/
